@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'rest_framework',
     'ordered_model',
+    'corsheaders',
 
     'core.apps.CoreConfig',
 ]
@@ -60,6 +61,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -146,3 +148,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CACHES = {
     'default': env.cache(),
 }
+
+
+# CORS
+CORS_ORIGIN_ALLOW_ALL = True
