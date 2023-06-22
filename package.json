@@ -1,0 +1,13 @@
+{
+  "name": "soundclone",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "generate:types": "poetry run ./manage.py generate_ts -s core -a",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

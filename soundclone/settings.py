@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'django_typomatic',
     'django_extensions',
     'rest_framework',
     'ordered_model',

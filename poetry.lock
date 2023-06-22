@@ -98,6 +98,22 @@ files = [
 djangorestframework = "*"
 
 [[package]]
+name = "django-typomatic"
+version = "2.3.2"
+description = "A simple solution for generating Typescript interfaces from your Django Rest Framework Serializers."
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "django-typomatic-2.3.2.tar.gz", hash = "sha256:43b082715accf9c001998e800d1b72abb76aadb33a8469a29de5c15b71158b45"},
+    {file = "django_typomatic-2.3.2-py3-none-any.whl", hash = "sha256:d3c574b0184bb2c2a496b807495791dcefedc122162fb82be1b2fa007ebcc54e"},
+]
+
+[package.dependencies]
+django = "*"
+djangorestframework = "*"
+
+[[package]]
 name = "djangorestframework"
 version = "3.14.0"
 description = "Web APIs for Django, made easy."
@@ -169,4 +185,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "2f8a0bd9abc9b79c32f5727eaa54e8b29e8c8d7389d4b041c7522daa6da81a3d"
+content-hash = "25a273e627e0f3267857b2d4f864915598606f3e8e27e0f110ffb5ef604ef8e7"

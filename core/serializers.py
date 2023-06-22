@@ -9,7 +9,7 @@ class VersionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Version
-        fields = ['id', 'name', 'song']
+        fields = ['id', 'name']
 
 
 class SongSerializer(OrderedModelSerializer, serializers.ModelSerializer):
@@ -30,4 +30,3 @@ class AlbumSerializer(serializers.ModelSerializer):
     class Meta:
         model = Album
         fields = ['id', 'name', 'songs']
-
