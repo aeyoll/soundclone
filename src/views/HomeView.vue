@@ -45,10 +45,6 @@ onMounted(async () => {
     <div v-if="songs.length > 0" >
       <div v-for="song in songs" :key="song.id">
         {{ song.name }}
-
-        <div v-for="song in songs" :key="song.id">
-          {{ song.name }}
-        </div>
       </div>
     </div>
 
