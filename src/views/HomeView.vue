@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { inject, onMounted, Ref, ref } from 'vue';
-import type { PlaylistSerializer, SongSerializer } from '../../types/core';
+import type { PlaylistSerializer, SongSerializer } from '@/types/core';
 
 const axios: any = inject('axios');
 const playlists: Ref<PlaylistSerializer[]> = ref([]);
