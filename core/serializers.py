@@ -1,7 +1,7 @@
 from ordered_model.serializers import OrderedModelSerializer
 from rest_framework import serializers
 
-from core.models import Album, Song, Version
+from core.models import Playlist, Song, Version
 
 
 class VersionSerializer(serializers.ModelSerializer):
@@ -22,11 +22,11 @@ class SongSerializer(OrderedModelSerializer, serializers.ModelSerializer):
         fields = ['id', 'name', 'order', 'versions']
 
 
-class AlbumSerializer(serializers.ModelSerializer):
-    """The serializer for an Album."""
+class PlaylistSerializer(serializers.ModelSerializer):
+    """The serializer for a Playlist."""
 
     songs = SongSerializer(many=True, read_only=True)
 
     class Meta:
-        model = Album
+        model = Playlist
         fields = ['id', 'name', 'songs']

@@ -1,4 +1,4 @@
-export interface AlbumSerializer {
+export interface PlaylistSerializer {
     /**
     * @label ID
     */

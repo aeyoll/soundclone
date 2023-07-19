@@ -21,10 +21,10 @@ from django.contrib import admin
 from django.urls import include, path
 from rest_framework import routers
 
-from core.views import AlbumViewSet, SongViewSet, VersionViewSet
+from core.views import PlaylistViewSet, SongViewSet, VersionViewSet
 
 router = routers.DefaultRouter()
-router.register(r'albums', AlbumViewSet)
+router.register(r'playlists', PlaylistViewSet)
 router.register(r'songs', SongViewSet)
 router.register(r'versions', VersionViewSet)
 

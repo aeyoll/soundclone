@@ -4,8 +4,8 @@ from django_extensions.db.models import TimeStampedModel
 from ordered_model.models import OrderedModel
 
 
-class Album(TimeStampedModel, models.Model):
-    """The model for an Album."""
+class Playlist(TimeStampedModel, models.Model):
+    """The model for a Playlist."""
 
     name = models.CharField('Name', max_length=128)
     slug = AutoSlugField(populate_from=['name'])
@@ -15,18 +15,18 @@ class Song(TimeStampedModel, OrderedModel):
     """The model for a song."""
 
     name = models.CharField('Name', max_length=128)
-    album = models.ForeignKey(
-        Album,
+    playlist = models.ForeignKey(
+        Playlist,
         related_name='songs',
         on_delete=models.CASCADE,
         null=True,
         blank=True
     )
     slug = AutoSlugField(populate_from=['name'])
-    order_with_respect_to = 'album'
+    order_with_respect_to = 'playlist'
 
     class Meta:
-        ordering = ('album', 'order')
+        ordering = ('playlist', 'order')
 
 
 class Version(TimeStampedModel, models.Model):

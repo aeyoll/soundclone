@@ -1,14 +1,14 @@
 from rest_framework import viewsets
 
-from core.models import Album, Song, Version
-from core.serializers import AlbumSerializer, SongSerializer, VersionSerializer
+from core.models import Playlist, Song, Version
+from core.serializers import PlaylistSerializer, SongSerializer, VersionSerializer
 
 
-class AlbumViewSet(viewsets.ModelViewSet):
-    """The viewset for albums."""
+class PlaylistViewSet(viewsets.ModelViewSet):
+    """The viewset for playlists."""
 
-    queryset = Album.objects.all()
-    serializer_class = AlbumSerializer
+    queryset = Playlist.objects.all()
+    serializer_class = PlaylistSerializer
 
 
 class SongViewSet(viewsets.ModelViewSet):
