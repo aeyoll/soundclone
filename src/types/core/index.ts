@@ -8,6 +8,14 @@ export interface PlaylistSerializer {
     */
     name: string;
     songs: SongSerializer[];
+    /**
+    * @format date-time
+    */
+    created?: string;
+    /**
+    * @format date-time
+    */
+    modified?: string;
 }
 
 export interface SongSerializer {
@@ -22,6 +30,14 @@ export interface SongSerializer {
     file: File;
     slug?: string;
     versions?: VersionSerializer[];
+    /**
+    * @format date-time
+    */
+    created?: string;
+    /**
+    * @format date-time
+    */
+    modified?: string;
 }
 
 export interface VersionSerializer {
@@ -35,5 +51,13 @@ export interface VersionSerializer {
     name: string;
     file: File;
     slug?: string;
+    /**
+    * @format date-time
+    */
+    created?: string;
+    /**
+    * @format date-time
+    */
+    modified?: string;
 }
 
