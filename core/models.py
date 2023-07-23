@@ -22,6 +22,7 @@ class Song(TimeStampedModel, OrderedModel):
         null=True,
         blank=True
     )
+    file = models.FileField(upload_to='songs/original/%Y/%m/%d')
     slug = AutoSlugField(populate_from=['name'])
     order_with_respect_to = 'playlist'
 
@@ -34,5 +35,5 @@ class Version(TimeStampedModel, models.Model):
 
     name = models.CharField('Name', max_length=128)
     song = models.ForeignKey(Song, related_name='versions', on_delete=models.CASCADE)
-    file = models.FileField(upload_to='songs/%Y/%m/%d')
+    file = models.FileField(upload_to='songs/versions/%Y/%m/%d')
     slug = AutoSlugField(populate_from=['name'])

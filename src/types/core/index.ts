@@ -7,7 +7,7 @@ export interface PlaylistSerializer {
     * @maxLength 128
     */
     name: string;
-    songs?: SongSerializer[];
+    songs: SongSerializer[];
 }
 
 export interface SongSerializer {
@@ -19,7 +19,8 @@ export interface SongSerializer {
     * @maxLength 128
     */
     name: string;
-    order: number;
+    file: File;
+    slug?: string;
     versions?: VersionSerializer[];
 }
 
@@ -32,5 +33,7 @@ export interface VersionSerializer {
     * @maxLength 128
     */
     name: string;
+    file: File;
+    slug?: string;
 }
 

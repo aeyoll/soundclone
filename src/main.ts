@@ -21,6 +21,7 @@ const app = createApp(App)
 
 app.use(createPinia())
 app.use(router)
+// @ts-ignore
 app.use(VueAxios, instance);
 app.provide('axios', app.config.globalProperties.axios);
 

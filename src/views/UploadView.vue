@@ -5,14 +5,14 @@ import { inject } from 'vue';
 const axios: any = inject('axios');
 
 // Components
-import DropZone from '@/components/DropZone.vue'
-import FilePreview from '@/components/FilePreview.vue'
+import DropZone from '@/components/DropZone.vue';
+import FilePreview from '@/components/FilePreview.vue';
 
 // File Management
-import useFileList from '@/compositions/file-list'
+import useFileList from '@/compositions/file-list';
 import { FilePreviewStatus, UploadableFile } from '@/types/file';
 
-const { files, addFiles, removeFile } = useFileList()
+const { files, addFiles, removeFile } = useFileList();
 
 function onInputChange(e): void {
   addFiles(e.target.files);
@@ -20,15 +20,21 @@ function onInputChange(e): void {
 }
 
 async function uploadFile(file: UploadableFile): Promise<void> {
-  // track status and upload file
   file.status = FilePreviewStatus.LOADING;
 
   try {
-    const body = {
+    const payload = {
       name: file.file.name,
       file: file.file,
-    }
-    await axios.post('songs/', body)
+    };
+
+    const options = {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    };
+
+    await axios.post('songs/', payload, options);
     file.status = FilePreviewStatus.UPLOADED;
   } catch (e) {
     file.status = FilePreviewStatus.ERROR;

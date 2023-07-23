@@ -9,7 +9,7 @@ class VersionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Version
-        fields = ['id', 'name']
+        fields = ['id', 'name', 'file', 'slug']
 
 
 class SongSerializer(OrderedModelSerializer, serializers.ModelSerializer):
@@ -19,13 +19,13 @@ class SongSerializer(OrderedModelSerializer, serializers.ModelSerializer):
 
     class Meta:
         model = Song
-        fields = ['id', 'name', 'versions']
+        fields = ['id', 'name', 'file', 'slug', 'versions']
 
 
 class PlaylistSerializer(serializers.ModelSerializer):
     """The serializer for a Playlist."""
 
-    songs = SongSerializer(many=True, read_only=True)
+    songs = SongSerializer(many=True)
 
     class Meta:
         model = Playlist
