@@ -1,12 +1,15 @@
 <script setup lang="ts">
-import { inject, onMounted, Ref, ref } from 'vue';
+import { computed, inject, onMounted, Ref, ref } from 'vue';
 import type { PlaylistSerializer, SongSerializer } from '@/types/core';
 
+// Injections
 const axios: any = inject('axios');
-const playlists: Ref<PlaylistSerializer[]> = ref([]);
 
+// Data
+const playlists: Ref<PlaylistSerializer[]> = ref([]);
 const songs: Ref<SongSerializer[]> = ref([]);
 
+// Methods
 const getPlaylists = async () => {
   const { data } = await axios.get('playlists/');
   playlists.value = data;
@@ -17,6 +20,11 @@ const getSongs = async () => {
   songs.value = data;
 }
 
+// Computed
+const feed = computed(() => {
+  return [...songs.value, ...playlists.value].sort((a, b) => new Date(b.created!) - new Date(a.created!))
+})
+
 onMounted(async () => {
   await Promise.all([getSongs(), getPlaylists()]);
 });
@@ -24,32 +32,25 @@ onMounted(async () => {
 
 <template>
   <main>
-    <h1>Playlists</h1>
+    <h1>Feed</h1>
 
-    <div v-if="playlists.length > 0" >
-      <div v-for="playlist in playlists" :key="playlist.id">
-        {{ playlist.name }}
+    <div v-if="feed.length > 0">
+      <div v-for="item in feed" :key="item.id">
+        <div v-if="item.hasOwnProperty('songs')">
+          {{ item.name }}
 
-        <div v-for="song in playlist.songs" :key="song.id">
-          {{ song.name }}
+          <div v-for="song in item.songs" :key="song.id">
+            {{ song.name }}
+          </div>
+        </div>
+
+        <div v-else>
+          {{ item.name }}
         </div>
       </div>
     </div>
-
     <div v-else class="alert alert-danger">
-      No playlist
-    </div>
-
-    <h1>Songs</h1>
-
-    <div v-if="songs.length > 0" >
-      <div v-for="song in songs" :key="song.id">
-        {{ song.name }}
-      </div>
-    </div>
-
-    <div v-else class="alert alert-danger">
-      No songs
+      No feed
     </div>
   </main>
 </template>
