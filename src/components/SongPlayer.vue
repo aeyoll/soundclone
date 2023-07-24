@@ -51,10 +51,9 @@ onMounted(() => {
     progressColor: progressGradient,
     barWidth: 2,
     normalize: true,
-    // url: props.song?.file as String,
+    url: props.song?.file as String,
+    peaks: props.song?.waveform?.data,
   });
-
-  wavesurfer.load(props.song?.file as string, props.song?.waveform?.data);
 
   // Play/pause on click
   wavesurfer.on('interaction', () => {
