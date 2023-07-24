@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import type { SongSerializer } from '@/types/core';
 import type { PropType } from 'vue';
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 import { formatDistance } from 'date-fns';
+import SongPlayer from '@/components/SongPlayer.vue';
 
 const props = defineProps({
   song: { type: Object as PropType<SongSerializer>, required: true }
@@ -11,6 +12,9 @@ const props = defineProps({
 const humanDate = computed(() => {
   return formatDistance(new Date(props.song?.created as string), new Date(), { addSuffix: true });
 });
+
+onMounted(() => {
+})
 </script>
 
 <template>
@@ -22,5 +26,7 @@ const humanDate = computed(() => {
         {{ humanDate }}
       </div>
     </div>
+
+    <SongPlayer :song="song"></SongPlayer>
   </div>
 </template>
