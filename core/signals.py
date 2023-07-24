@@ -1,32 +1,10 @@
 import json
-import subprocess
 
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 from core.models import Song
-
-
-def run_command(command):
-    try:
-        # Run the command and capture its output
-        result = subprocess.run(
-            command,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True,
-            shell=True
-        )
-
-        # Check if the command was successful (exit code 0)
-        if result.returncode == 0:
-            # Captured output will be in result.stdout
-            return result.stdout
-        else:
-            # If there was an error, captured error messages will be in result.stderr
-            return f"Error occurred: {result.stderr}"
-    except FileNotFoundError:
-        return "Command not found or executable not in the system path."
+from core.utils import run_command
 
 
 def scale_json(file_content):
@@ -37,9 +15,12 @@ def scale_json(file_content):
 
     max_val = float(max(data))
     new_data = []
+
     for x in data:
         new_data.append(round(x / max_val, digits))
-    # audiowaveform is generating interleaved peak data when using the --split-channels flag, so we have to deinterleave it
+
+    # audiowaveform is generating interleaved peak data when using the
+    # --split-channels flag, so we have to deinterleave it
     if channels > 1:
         deinterleaved_data = deinterleave(new_data, channels)
         json_content["data"] = deinterleaved_data
@@ -49,13 +30,15 @@ def scale_json(file_content):
     return json_content
 
 
-def deinterleave(data, channelCount):
-    # first step is to separate the values for each audio channel and min/max value pair, hence we get an array with channelCount * 2 arrays
-    deinterleaved = [data[idx::channelCount * 2] for idx in range(channelCount * 2)]
+def deinterleave(data, channel_count):
+    # first step is to separate the values for each audio channel and min/max
+    # value pair, hence we get an array with channel_count * 2 arrays
+    deinterleaved = [data[idx::channel_count * 2] for idx in range(channel_count * 2)]
     new_data = []
 
-    # this second step combines each min and max value again in one array so we have one array for each channel
-    for ch in range(channelCount):
+    # this second step combines each min and max value again in one array,
+    # so we have one array for each channel
+    for ch in range(channel_count):
         idx1 = 2 * ch
         idx2 = 2 * ch + 1
         ch_data = [None] * (len(deinterleaved[idx1]) + len(deinterleaved[idx2]))
