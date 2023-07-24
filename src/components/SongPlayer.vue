@@ -82,20 +82,22 @@ onMounted(() => {
 </script>
 
 <template>
-  <div>
-    <div>
-      <button v-if="isPlaying" @click="pause()">Pause</button>
-      <button v-if="!isPlaying" @click="play()">Play</button>
+  <div class="flex items-center gap-4">
+    <div class="w-16">
+      <button v-if="isPlaying" @click="pause()" class="btn">Pause</button>
+      <button v-if="!isPlaying" @click="play()" class="btn">Play</button>
     </div>
-    <div ref="waveform" class="waveform">
-      <div class="time left-0">{{ time }}</div>
-      <div class="time right-0">{{ duration }}</div>
-      <div class="hover" ref="hover"></div>
+    <div class="w-full">
+      <div ref="waveform" class="waveform">
+        <div class="time left-0">{{ time }}</div>
+        <div class="time right-0">{{ duration }}</div>
+        <div class="hover" ref="hover"></div>
+      </div>
     </div>
   </div>
 </template>
 
-<style>
+<style scoped>
   .waveform  {
     @apply cursor-pointer relative;
   }
@@ -104,8 +106,12 @@ onMounted(() => {
     @apply opacity-100;
   }
 
+  .btn {
+    @apply aspect-square rounded-full bg-slate-800 text-white p-2 h-16 w-16;
+  }
+
   .time {
-    @apply absolute z-20 top-1/2 -mt-1 -translate-y-1/2;
+    @apply absolute z-20 top-1/2 mt-1 -translate-y-1/2;
     @apply p-1;
     @apply rounded;
     @apply bg-slate-800 text-white;
