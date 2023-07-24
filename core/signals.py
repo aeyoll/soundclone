@@ -68,7 +68,7 @@ def deinterleave(data, channelCount):
 @receiver(post_save, sender=Song)
 def generate_waveform(sender, instance, created, **kwargs):
     if created:
-        command_to_run = f'/usr/local/bin/audiowaveform -i {instance.file.path} --pixels-per-second 20 --bits 8 --output-format=json -q'
+        command_to_run = f'/usr/local/bin/audiowaveform -i {instance.file.path} --pixels-per-second 5 --bits 8 --output-format=json -q'
         output = run_command(command_to_run)
         instance.waveform = scale_json(output)
         instance.save()
