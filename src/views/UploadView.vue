@@ -11,6 +11,8 @@ import FilePreview from '@/components/FilePreview.vue';
 // File Management
 import useFileList from '@/compositions/file-list';
 import { FilePreviewStatus, UploadableFile } from '@/types/file';
+import ViewTitle from '@/components/ViewTitle.vue';
+import AppButton from '@/components/AppButton.vue';
 
 const { files, addFiles, removeFile } = useFileList();
 
@@ -48,7 +50,7 @@ async function uploadFiles(files): Promise<void> {
 
 <template>
   <main>
-    <h1>Upload</h1>
+    <ViewTitle>Upload</ViewTitle>
 
     <DropZone class="drop-area" @files-dropped="addFiles" #default="{ dropZoneActive }">
       <label for="file-input">
@@ -76,6 +78,6 @@ async function uploadFiles(files): Promise<void> {
         />
       </div>
     </DropZone>
-    <button @click.prevent="uploadFiles(files)" class="upload-button">Upload</button>
+    <AppButton @click.prevent="uploadFiles(files)" class="upload-button">Upload</AppButton>
   </main>
 </template>

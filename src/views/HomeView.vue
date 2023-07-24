@@ -2,6 +2,7 @@
 import { computed, inject, onMounted, Ref, ref } from 'vue';
 import type { PlaylistSerializer, SongSerializer } from '@/types/core';
 import ViewTitle from '@/components/ViewTitle.vue';
+import FeedSong from '@/components/FeedSong.vue';
 
 // Injections
 const axios: any = inject('axios');
@@ -46,7 +47,7 @@ onMounted(async () => {
         </div>
 
         <div v-else>
-          {{ item.name }}
+          <FeedSong :song="item as SongSerializer"></FeedSong>
         </div>
       </div>
     </div>
