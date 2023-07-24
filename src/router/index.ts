@@ -6,19 +6,19 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: () => import('../views/HomeView.vue')
+      component: () => import('../views/HomeView.vue'),
     },
     {
       path: '/about',
       name: 'about',
-      component: () => import('../views/AboutView.vue')
+      component: () => import('../views/AboutView.vue'),
     },
     {
       path: '/upload',
       name: 'upload',
-      component: () => import('../views/UploadView.vue')
+      component: () => import('../views/UploadView.vue'),
     },
-  ]
-})
+  ],
+});
 
 export default router;

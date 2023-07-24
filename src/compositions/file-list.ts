@@ -2,16 +2,20 @@ import type { Ref } from 'vue';
 import { ref } from 'vue';
 import { UploadableFile } from '@/types/file';
 
-export default function () {
+export default function useFileList() {
   const files: Ref<UploadableFile[]> = ref([]);
-
-  function addFiles(newFiles: File[]) {
-    const newUploadableFiles = [...newFiles].map((file) => new UploadableFile(file)).filter((file) => !fileExists(file.id));
-    files.value = files.value.concat(newUploadableFiles);
-  }
 
   function fileExists(otherId: string) {
     return files.value.some(({ id }) => id === otherId);
+  }
+
+  function addFiles(newFiles: File[]) {
+    const newUploadableFiles = [...newFiles].map(
+      (file) => new UploadableFile(file),
+    ).filter(
+      (file) => !fileExists(file.id),
+    );
+    files.value = files.value.concat(newUploadableFiles);
   }
 
   function removeFile(file: UploadableFile) {

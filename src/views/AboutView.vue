@@ -1,8 +1,9 @@
 <script setup lang="ts">
+import AppTitle from '@/components/AppTitle.vue';
 </script>
 
 <template>
   <main>
-    <h1>This is an about page</h1>
+    <AppTitle>This is an about page</AppTitle>
   </main>
 </template>

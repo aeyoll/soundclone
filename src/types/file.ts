@@ -6,8 +6,11 @@ export enum FilePreviewStatus {
 
 export class UploadableFile {
   public id: string;
+
   public file: File;
+
   public url: string;
+
   public status: FilePreviewStatus|null;
 
   constructor(file: File) {

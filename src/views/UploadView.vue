@@ -1,20 +1,20 @@
 <script setup lang="ts">
 import { inject, ref } from 'vue';
 
-// Injection
-const axios: any = inject('axios');
-
 // Components
 import DropZone from '@/components/FormDropZone.vue';
 import FilePreview from '@/components/FormFilePreview.vue';
 
 // File Management
-import useFileList from '@/compositions/file-list';
-import { FilePreviewStatus, UploadableFile } from '@/types/file';
 import ViewTitle from '@/components/AppTitle.vue';
 import AppButton from '@/components/AppButton.vue';
-import type { PlaylistSerializer } from '@/types/core';
 import FormInput from '@/components/FormInput.vue';
+import useFileList from '@/compositions/file-list.ts';
+import { FilePreviewStatus, UploadableFile } from '@/types/file.ts';
+import type { PlaylistSerializer } from '@/types/core';
+
+// Injection
+const axios: any = inject('axios');
 
 const { files, addFiles, removeFile } = useFileList();
 
@@ -27,27 +27,35 @@ function onInputChange(e): void {
 }
 
 async function uploadFile(file: UploadableFile): Promise<void> {
+  // eslint-disable-next-line no-param-reassign
   file.status = FilePreviewStatus.LOADING;
 
   try {
+    interface Payload {
+      name: string,
+      file: File,
+      playlist: number|null,
+    }
     const payload = {
       name: file.file.name,
       file: file.file,
-    };
+    } as Payload;
 
     if (playlist.value) {
-      payload['playlist'] = playlist.value?.id;
+      payload.playlist = playlist.value?.id;
     }
 
     const options = {
       headers: {
-        'Content-Type': 'multipart/form-data'
-      }
+        'Content-Type': 'multipart/form-data',
+      },
     };
 
     await axios.post('songs/', payload, options);
+    // eslint-disable-next-line no-param-reassign
     file.status = FilePreviewStatus.UPLOADED;
   } catch (e) {
+    // eslint-disable-next-line no-param-reassign
     file.status = FilePreviewStatus.ERROR;
   }
 }
@@ -64,12 +72,12 @@ async function createPlaylist(): Promise<void> {
   }
 }
 
-async function uploadFiles(files): Promise<void> {
+async function uploadFiles(): Promise<void> {
   if (newPlaylistName.value) {
     await createPlaylist();
   }
 
-  await Promise.all(files.map((file) => uploadFile(file)))
+  await Promise.all(files.value.map((file) => uploadFile(file)));
 }
 </script>
 
@@ -93,7 +101,7 @@ async function uploadFiles(files): Promise<void> {
         <input type="file" id="file-input" multiple @change="onInputChange" class="absolute -left-full" />
       </label>
 
-      <FormInput v-model="newPlaylistName" label="Playlist"></FormInput>
+      <FormInput v-model="newPlaylistName" label="Playlist" />
 
       <div v-if="files.length" class="mt-4 lg:w-1/2">
         <FilePreview
@@ -104,6 +112,6 @@ async function uploadFiles(files): Promise<void> {
         />
       </div>
     </DropZone>
-    <AppButton class="mt-4" @click.prevent="uploadFiles(files)">Upload</AppButton>
+    <AppButton class="mt-4" @click.prevent="uploadFiles()">Upload</AppButton>
   </main>
 </template>

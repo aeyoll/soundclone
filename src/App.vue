@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { RouterView } from 'vue-router'
+import { RouterView } from 'vue-router';
 import MainNavigation from '@/components/AppNavigation.vue';
 </script>
 
 <template>
   <header>
-    <MainNavigation></MainNavigation>
+    <MainNavigation />
   </header>
 
   <div class="container mx-auto my-4">

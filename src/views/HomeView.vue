@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { computed, inject, onMounted, Ref, ref } from 'vue';
-import type { PlaylistSerializer, SongSerializer } from '@/types/core';
+import {
+  computed, inject, onMounted, Ref, ref,
+} from 'vue';
 import ViewTitle from '@/components/AppTitle.vue';
 import FeedSong from '@/components/FeedSong.vue';
+import type { PlaylistSerializer, SongSerializer } from '@/types/core';
 
 // Injections
 const axios: any = inject('axios');
@@ -20,12 +22,13 @@ const getPlaylists = async () => {
 const getSongs = async () => {
   const { data } = await axios.get('songs/');
   songs.value = data;
-}
+};
 
 // Computed
 const feed = computed(() => {
-  return [...songs.value, ...playlists.value].sort((a, b) => new Date(b.created!) - new Date(a.created!))
-})
+  const merged = [...songs.value, ...playlists.value];
+  return merged.sort((a, b) => new Date(b.created!) - new Date(a.created!));
+});
 
 onMounted(async () => {
   await Promise.all([getSongs(), getPlaylists()]);
@@ -47,7 +50,7 @@ onMounted(async () => {
         </div>
 
         <div v-else>
-          <FeedSong :song="item as SongSerializer"></FeedSong>
+          <FeedSong :song="item as SongSerializer" />
         </div>
       </div>
     </div>
