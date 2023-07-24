@@ -36,7 +36,7 @@ onMounted(async () => {
   <main>
     <ViewTitle>Feed</ViewTitle>
 
-    <div v-if="feed.length > 0">
+    <div v-if="feed.length > 0" class="lg:w-2/3">
       <div v-for="item in feed" :key="item.id">
         <div v-if="item.hasOwnProperty('songs')">
           {{ item.name }}

@@ -53,7 +53,7 @@ async function uploadFiles(files): Promise<void> {
     <ViewTitle>Upload</ViewTitle>
 
     <DropZone class="drop-area" @files-dropped="addFiles" #default="{ dropZoneActive }">
-      <label for="file-input">
+      <label for="file-input" class="text-sm h-48 border flex justify-center rounded items-center lg:w-1/2">
         <span v-if="dropZoneActive">
           <span>Drop Them Here</span>
           <span class="smaller">to add them</span>
@@ -61,23 +61,22 @@ async function uploadFiles(files): Promise<void> {
         <span v-else>
           <span>Drag Your Files Here</span>
           <span class="smaller">
-            or <strong><em>click here</em></strong> to select files
+            or <strong><em class="cursor-pointer">click here</em></strong> to select files
           </span>
         </span>
 
-        <input type="file" id="file-input" multiple @change="onInputChange" />
+        <input type="file" id="file-input" multiple @change="onInputChange" class="absolute -left-full" />
       </label>
 
-      <div v-if="files.length">
+      <div v-if="files.length" class="mt-4 lg:w-1/2">
         <FilePreview
           v-for="file of files"
           :key="file.id"
           :file="file"
-          tag="li"
           @remove="removeFile"
         />
       </div>
     </DropZone>
-    <AppButton @click.prevent="uploadFiles(files)" class="upload-button">Upload</AppButton>
+    <AppButton class="mt-4" @click.prevent="uploadFiles(files)">Upload</AppButton>
   </main>
 </template>
