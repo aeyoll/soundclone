@@ -19,7 +19,7 @@ class SongSerializer(OrderedModelSerializer, serializers.ModelSerializer):
 
     class Meta:
         model = Song
-        fields = ['id', 'name', 'file', 'slug', 'versions', 'created', 'modified']
+        fields = ['id', 'name', 'file', 'slug', 'waveform', 'versions', 'created', 'modified']
 
 
 class PlaylistSerializer(serializers.ModelSerializer):

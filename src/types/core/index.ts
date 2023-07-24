@@ -29,6 +29,7 @@ export interface SongSerializer {
     name: string;
     file: File;
     slug?: string;
+    waveform?: any | null;
     versions?: VersionSerializer[];
     /**
     * @format date-time
