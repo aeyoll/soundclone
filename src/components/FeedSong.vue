@@ -3,7 +3,7 @@ import type { SongSerializer } from '@/types/core';
 import type { PropType } from 'vue';
 import { computed, onMounted } from 'vue';
 import { formatDistance } from 'date-fns';
-import SongPlayer from '@/components/SongPlayer.vue';
+import SongPlayer from '@/components/AudioPlayer.vue';
 
 const props = defineProps({
   song: { type: Object as PropType<SongSerializer>, required: true }

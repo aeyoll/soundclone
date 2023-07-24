@@ -5,15 +5,16 @@ import { inject, ref } from 'vue';
 const axios: any = inject('axios');
 
 // Components
-import DropZone from '@/components/DropZone.vue';
-import FilePreview from '@/components/FilePreview.vue';
+import DropZone from '@/components/FormDropZone.vue';
+import FilePreview from '@/components/FormFilePreview.vue';
 
 // File Management
 import useFileList from '@/compositions/file-list';
 import { FilePreviewStatus, UploadableFile } from '@/types/file';
-import ViewTitle from '@/components/ViewTitle.vue';
+import ViewTitle from '@/components/AppTitle.vue';
 import AppButton from '@/components/AppButton.vue';
 import type { PlaylistSerializer } from '@/types/core';
+import FormInput from '@/components/FormInput.vue';
 
 const { files, addFiles, removeFile } = useFileList();
 
@@ -92,10 +93,7 @@ async function uploadFiles(files): Promise<void> {
         <input type="file" id="file-input" multiple @change="onInputChange" class="absolute -left-full" />
       </label>
 
-      <label class="block">
-        <span class="text-slate-700">Playlist</span>
-        <input type="text" class="mt-1 block w-full rounded border-slate-200" placeholder="" v-model="newPlaylistName">
-      </label>
+      <FormInput v-model="newPlaylistName" label="Playlist"></FormInput>
 
       <div v-if="files.length" class="mt-4 lg:w-1/2">
         <FilePreview

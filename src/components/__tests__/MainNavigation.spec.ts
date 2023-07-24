@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 
 import { mount } from '@vue/test-utils'
-import MainNavigation from '../MainNavigation.vue'
+import MainNavigation from '../AppNavigation.vue'
 
 describe('MainNavigation', () => {
   it('renders properly', () => {

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, inject, onMounted, Ref, ref } from 'vue';
 import type { PlaylistSerializer, SongSerializer } from '@/types/core';
-import ViewTitle from '@/components/ViewTitle.vue';
+import ViewTitle from '@/components/AppTitle.vue';
 import FeedSong from '@/components/FeedSong.vue';
 
 // Injections
