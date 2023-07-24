@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, inject, onMounted, Ref, ref } from 'vue';
 import type { PlaylistSerializer, SongSerializer } from '@/types/core';
+import ViewTitle from '@/components/ViewTitle.vue';
 
 // Injections
 const axios: any = inject('axios');
@@ -32,7 +33,7 @@ onMounted(async () => {
 
 <template>
   <main>
-    <h1>Feed</h1>
+    <ViewTitle>Feed</ViewTitle>
 
     <div v-if="feed.length > 0">
       <div v-for="item in feed" :key="item.id">

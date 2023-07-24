@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
-import Navigation from '@/components/MainNavigation.vue';
+import MainNavigation from '@/components/MainNavigation.vue';
 </script>
 
 <template>
   <header>
-    <div class="wrapper">
-      <Navigation></Navigation>
-    </div>
+    <MainNavigation></MainNavigation>
   </header>
 
-  <RouterView />
+  <div class="container mx-auto my-4">
+    <RouterView />
+  </div>
 </template>
