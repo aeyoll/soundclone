@@ -20,6 +20,8 @@ const waveform = ref(null);
 const hover = ref(null);
 
 // Data
+const wavesurfer = ref<WaveSurfer>();
+const isPlaying = ref(false);
 const time = ref(formatTime(0));
 const duration = ref(formatTime(0));
 
@@ -44,8 +46,18 @@ progressGradient.addColorStop((canvas.height * 0.7 + 2) / canvas.height, '#fffff
 progressGradient.addColorStop((canvas.height * 0.7 + 3) / canvas.height, '#F6B094') // Bottom color
 progressGradient.addColorStop(1, '#F6B094') // Bottom color
 
+const play = () => {
+  wavesurfer.value?.play();
+  isPlaying.value = true;
+}
+
+const pause = () => {
+  wavesurfer.value?.pause();
+  isPlaying.value = false;
+}
+
 onMounted(() => {
-  const wavesurfer = WaveSurfer.create({
+  wavesurfer.value = WaveSurfer.create({
     container: waveform.value as string,
     waveColor: gradient,
     progressColor: progressGradient,
@@ -56,32 +68,53 @@ onMounted(() => {
   });
 
   // Play/pause on click
-  wavesurfer.on('interaction', () => {
-    wavesurfer.playPause()
+  wavesurfer.value?.on('interaction', () => {
+    wavesurfer.value?.playPause()
+    isPlaying.value = !isPlaying.value;
   });
 
   // Hover effect
   waveform.value.addEventListener('pointermove', (e) => (hover.value.style.width = `${e.offsetX}px`));
 
-  wavesurfer.on('decode', (decodedDuration) => (duration.value = formatTime(decodedDuration)))
-  wavesurfer.on('timeupdate', (currentTime) => (time.value = formatTime(currentTime)))
+  wavesurfer.value?.on('decode', (decodedDuration) => duration.value = formatTime(decodedDuration));
+  wavesurfer.value?.on('timeupdate', (currentTime) => time.value = formatTime(currentTime));
 });
 </script>
 
 <template>
-  <div ref="waveform" class="cursor-pointer relative">
-    <div class="time left-0">{{ time }}</div>
-    <div class="time right-0">{{ duration }}</div>
-    <div ref="hover"></div>
+  <div>
+    <div>
+      <button v-if="isPlaying" @click="pause()">Pause</button>
+      <button v-if="!isPlaying" @click="play()">Play</button>
+    </div>
+    <div ref="waveform" class="waveform">
+      <div class="time left-0">{{ time }}</div>
+      <div class="time right-0">{{ duration }}</div>
+      <div class="hover" ref="hover"></div>
+    </div>
   </div>
 </template>
 
 <style>
+  .waveform  {
+    @apply cursor-pointer relative;
+  }
+
+  .waveform:hover .hover {
+    @apply opacity-100;
+  }
+
   .time {
     @apply absolute z-20 top-1/2 -mt-1 -translate-y-1/2;
     @apply p-1;
     @apply rounded;
     @apply bg-slate-800 text-white;
     @apply text-xs;
+  }
+
+  .hover {
+    @apply absolute left-0 top-0 z-10 pointer-events-none h-full w-0 mix-blend-overlay;
+    @apply opacity-0;
+    background: rgba(255, 255, 255, 0.5);
   }
 </style>

@@ -19,7 +19,7 @@ onMounted(() => {
 
 <template>
   <div class="py-2 border-b border-slate-900/10 text-sm">
-    <div class="flex items-center justify-between">
+    <div class="flex items-center justify-between mb-4">
       {{ song.name }}
 
       <div class="text-slate-500 text-xs">
