@@ -3,7 +3,7 @@ import json
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-from core.models import Song
+from core.models import Song, Version
 from core.utils import run_command
 
 
@@ -48,6 +48,7 @@ def deinterleave(data, channel_count):
     return new_data
 
 
+@receiver(post_save, sender=Version)
 @receiver(post_save, sender=Song)
 def generate_waveform(sender, instance, created, **kwargs):
     if created:
