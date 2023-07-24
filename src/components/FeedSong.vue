@@ -2,14 +2,14 @@
 import type { SongSerializer } from '@/types/core';
 import type { PropType } from 'vue';
 import { computed } from 'vue';
-import { format, formatDistance, formatRelative, subDays } from 'date-fns';
+import { formatDistance } from 'date-fns';
 
 const props = defineProps({
   song: { type: Object as PropType<SongSerializer>, required: true }
 });
 
 const humanDate = computed(() => {
-  return formatDistance(subDays(new Date(props.song?.created as string), 3), new Date(), { addSuffix: true });
+  return formatDistance(new Date(props.song?.created as string), new Date(), { addSuffix: true });
 });
 </script>
 
