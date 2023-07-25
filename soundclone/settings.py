@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'ordered_model',
     'corsheaders',
+    'django_cleanup.apps.CleanupConfig',
 
     'core.apps.CoreConfig',
 ]
