@@ -4,6 +4,7 @@ import {
 } from 'vue';
 import ViewTitle from '@/components/AppTitle.vue';
 import FeedSong from '@/components/FeedSong.vue';
+import FeedPlaylist from '@/components/FeedPlaylist.vue';
 import type { PlaylistSerializer, SongSerializer } from '@/types/core';
 
 // Injections
@@ -42,11 +43,7 @@ onMounted(async () => {
     <div v-if="feed.length > 0" class="lg:w-2/3">
       <div v-for="item in feed" :key="item.id">
         <div v-if="item.hasOwnProperty('songs')">
-          {{ item.name }}
-
-          <div v-for="song in item.songs" :key="song.id">
-            {{ song.name }}
-          </div>
+          <FeedPlaylist :playlist="item as PlaylistSerializer" />
         </div>
 
         <div v-else>

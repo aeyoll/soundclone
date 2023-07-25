@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { onMounted, PropType, ref } from 'vue';
+import {
+  onMounted, PropType, ref, watch,
+} from 'vue';
 import WaveSurfer from 'wavesurfer.js';
 import type { SongSerializer } from '@/types/core';
 
@@ -14,6 +16,9 @@ const formatTime = (seconds: number) => {
 const props = defineProps({
   song: { type: Object as PropType<SongSerializer>, required: true },
 });
+
+// Emit
+const emit = defineEmits(['isPlaying']);
 
 // Refs
 const waveform = ref<HTMLElement|null>(null);
@@ -49,14 +54,17 @@ progressGradient.addColorStop(1, '#F6B094'); // Bottom color
 const play = () => {
   wavesurfer.value?.play();
   isPlaying.value = true;
+  emit('isPlaying', true);
 };
 
 const pause = () => {
   wavesurfer.value?.pause();
   isPlaying.value = false;
+  emit('isPlaying', false);
 };
 
-onMounted(() => {
+const createWavesurfer = () => {
+  time.value = formatTime(0);
   wavesurfer.value = WaveSurfer.create({
     container: waveform.value as string,
     waveColor: gradient,
@@ -68,10 +76,10 @@ onMounted(() => {
   });
 
   // Play/pause on click
-  wavesurfer.value?.on('interaction', () => {
-    wavesurfer.value?.playPause();
-    isPlaying.value = !isPlaying.value;
-  });
+  // wavesurfer.value?.on('interaction', () => {
+  //   wavesurfer.value?.playPause();
+  //   isPlaying.value = !isPlaying.value;
+  // });
 
   // Hover effect
   waveform.value?.addEventListener('pointermove', (e) => {
@@ -85,6 +93,22 @@ onMounted(() => {
   wavesurfer.value?.on('timeupdate', (currentTime: number) => {
     time.value = formatTime(currentTime);
   });
+};
+
+const destroyWavesurfer = () => {
+  wavesurfer.value?.destroy();
+};
+
+onMounted(() => {
+  createWavesurfer();
+});
+
+watch(() => props.song, () => {
+  destroyWavesurfer();
+  createWavesurfer();
+  if (isPlaying.value) {
+    wavesurfer.value?.play();
+  }
 });
 </script>
 
