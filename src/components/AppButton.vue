@@ -1,22 +1,26 @@
+<script setup lang="ts">
+const props = defineProps({
+  size: { type: String, default: '' },
+});
+</script>
+
 <template>
-  <button class="btn" type="button">
+  <button class="btn" type="button" :class="{ 'btn-sm': props.size === 'sm' }">
     <slot />
   </button>
 </template>
 
 <style>
 .btn {
-  @apply bg-slate-900 hover:bg-slate-700 text-white;
+  @apply bg-slate-800 hover:bg-slate-700 text-white;
 
-  @apply
-    focus:outline-none
+  @apply focus:outline-none
     focus:ring-2
     focus:ring-slate-400
     focus:ring-offset-2
     focus:ring-offset-slate-50;
 
-  @apply
-    h-10
+  @apply h-10
     px-6
     rounded
     w-full
@@ -24,5 +28,11 @@
     items-center
     justify-center
     sm:w-auto;
+}
+
+.btn-sm {
+  @apply text-xs
+    h-8
+    px-4;
 }
 </style>

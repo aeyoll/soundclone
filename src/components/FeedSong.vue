@@ -3,6 +3,7 @@ import type { PropType } from 'vue';
 import { computed } from 'vue';
 import { formatDistance } from 'date-fns';
 import AudioPlayer from '@/components/AudioPlayer.vue';
+import AppButton from '@/components/AppButton.vue';
 import type { SongSerializer } from '@/types/core';
 
 const props = defineProps({
@@ -26,5 +27,10 @@ const humanDate = computed(() => {
     </div>
 
     <AudioPlayer :song="song" />
+
+    <div class="flex gap-2 mt-4">
+      <AppButton type="button" size="sm">Edit</AppButton>
+      <AppButton type="button" size="sm">Delete</AppButton>
+    </div>
   </div>
 </template>
