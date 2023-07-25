@@ -3,7 +3,10 @@ import type { PropType } from 'vue';
 import { computed, ref } from 'vue';
 import { formatDistance } from 'date-fns';
 import AudioPlayer from '@/components/AudioPlayer.vue';
+import { useSoundcloneStore } from '@/stores/soundclone.ts';
 import type { PlaylistSerializer } from '@/types/core';
+
+const store = useSoundcloneStore();
 
 const props = defineProps({
   playlist: { type: Object as PropType<PlaylistSerializer>, required: true },
@@ -17,6 +20,19 @@ const humanDate = computed(() => {
   const songDate = new Date(props.playlist?.created as string);
   return formatDistance(songDate, new Date(), { addSuffix: true });
 });
+const playlistLength = computed(() => props.playlist?.songs.length);
+const isLastSongPlaying = computed(() => currentSongIndex.value === playlistLength.value - 1);
+
+const goToNextSong = () => {
+  if (isLastSongPlaying.value) {
+    // If the last song of the playlist is playing, go to the next
+    // item in the feed
+    store.goToNextSong();
+  } else {
+    // Otherwise, go to the next song in the playlist
+    currentSongIndex.value += 1;
+  }
+};
 </script>
 
 <template>
@@ -35,6 +51,7 @@ const humanDate = computed(() => {
       :playlist="playlist"
       :index="index"
       @is-playing="isPlaying = $event"
+      @song-finished="goToNextSong()"
       class="mb-4" />
 
     <div

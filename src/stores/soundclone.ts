@@ -45,6 +45,8 @@ export const useSoundcloneStore = defineStore('soundclone', () => {
   const goToNextSong = () => {
     if (currentIndex.value < feed.value.length - 1) {
       currentIndex.value += 1;
+    } else {
+      currentIndex.value = 0;
     }
   };
 

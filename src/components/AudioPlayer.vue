@@ -23,7 +23,10 @@ const props = defineProps({
 });
 
 // Emit
-const emit = defineEmits(['isPlaying']);
+const emit = defineEmits([
+  'isPlaying',
+  'songFinished',
+]);
 
 // Refs
 const waveform = ref<HTMLElement|null>(null);
@@ -88,12 +91,6 @@ const createWavesurfer = () => {
     peaks: props.song?.waveform?.data,
   });
 
-  // Play/pause on click
-  // wavesurfer.value?.on('interaction', () => {
-  //   wavesurfer.value?.playPause();
-  //   isPlaying.value = !isPlaying.value;
-  // });
-
   // Hover effect
   waveform.value?.addEventListener('pointermove', (e) => {
     if ('style' in hover.value) {
@@ -110,7 +107,14 @@ const createWavesurfer = () => {
   });
 
   wavesurfer.value?.on('finish', () => {
-    store.goToNextSong();
+    // Trigger the "songFinished" event
+    emit('songFinished');
+
+    // If the player is not from a playlist, we can safely go to the next
+    // song from the feed
+    if (!props.playlist) {
+      store.goToNextSong();
+    }
   });
 };
 
@@ -134,7 +138,7 @@ watch(() => props.song, () => {
 watch(() => store.currentIndex, (newIndex: number) => {
   if (newIndex !== props.index) {
     stop();
-  } else if (!isPlaying.value) {
+  } else if (!isPlaying.value && newIndex > 0) {
     play();
   }
 });
