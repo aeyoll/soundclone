@@ -7,6 +7,7 @@ import type { PlaylistSerializer } from '@/types/core';
 
 const props = defineProps({
   playlist: { type: Object as PropType<PlaylistSerializer>, required: true },
+  index: { type: Number, required: true },
 });
 
 const isPlaying = ref(false);
@@ -31,6 +32,8 @@ const humanDate = computed(() => {
     <AudioPlayer
       v-if="playlist.songs[currentSongIndex]"
       :song="playlist.songs[currentSongIndex]"
+      :playlist="playlist"
+      :index="index"
       @is-playing="isPlaying = $event"
       class="mb-4" />
 

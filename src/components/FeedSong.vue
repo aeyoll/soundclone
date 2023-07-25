@@ -8,6 +8,7 @@ import type { SongSerializer } from '@/types/core';
 
 const props = defineProps({
   song: { type: Object as PropType<SongSerializer>, required: true },
+  index: { type: Number, required: true },
 });
 
 const humanDate = computed(() => {
@@ -26,7 +27,7 @@ const humanDate = computed(() => {
       </div>
     </div>
 
-    <AudioPlayer :song="song" />
+    <AudioPlayer :song="song" :index="index" />
 
     <div class="flex gap-2 mt-4">
       <AppButton type="button" size="sm">Edit</AppButton>

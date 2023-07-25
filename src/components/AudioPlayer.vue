@@ -3,7 +3,8 @@ import {
   onMounted, PropType, ref, watch,
 } from 'vue';
 import WaveSurfer from 'wavesurfer.js';
-import type { SongSerializer } from '@/types/core';
+import { useSoundcloneStore } from '@/stores/soundclone.ts';
+import type { PlaylistSerializer, SongSerializer } from '@/types/core';
 
 const formatTime = (seconds: number) => {
   const minutes = Math.floor(seconds / 60);
@@ -12,9 +13,13 @@ const formatTime = (seconds: number) => {
   return `${minutes}:${paddedSeconds}`;
 };
 
+const store = useSoundcloneStore();
+
 // Props
 const props = defineProps({
+  index: { type: Number, required: true },
   song: { type: Object as PropType<SongSerializer>, required: true },
+  playlist: { type: Object as PropType<PlaylistSerializer>, required: false, default: null },
 });
 
 // Emit
@@ -55,10 +60,18 @@ const play = () => {
   wavesurfer.value?.play();
   isPlaying.value = true;
   emit('isPlaying', true);
+
+  store.setCurrentIndex(props.index as number);
 };
 
 const pause = () => {
   wavesurfer.value?.pause();
+  isPlaying.value = false;
+  emit('isPlaying', false);
+};
+
+const stop = () => {
+  wavesurfer.value?.stop();
   isPlaying.value = false;
   emit('isPlaying', false);
 };
@@ -83,7 +96,9 @@ const createWavesurfer = () => {
 
   // Hover effect
   waveform.value?.addEventListener('pointermove', (e) => {
-    hover.value.style.width = `${e.offsetX}px`;
+    if ('style' in hover.value) {
+      hover.value.style.width = `${e.offsetX}px`;
+    }
   });
 
   wavesurfer.value?.on('decode', (decodedDuration: number) => {
@@ -92,6 +107,10 @@ const createWavesurfer = () => {
 
   wavesurfer.value?.on('timeupdate', (currentTime: number) => {
     time.value = formatTime(currentTime);
+  });
+
+  wavesurfer.value?.on('finish', () => {
+    store.goToNextSong();
   });
 };
 
@@ -103,11 +122,20 @@ onMounted(() => {
   createWavesurfer();
 });
 
+// Regenerate the wavesurfer when the song changes
 watch(() => props.song, () => {
   destroyWavesurfer();
   createWavesurfer();
   if (isPlaying.value) {
     wavesurfer.value?.play();
+  }
+});
+
+watch(() => store.currentIndex, (newIndex: number) => {
+  if (newIndex !== props.index) {
+    stop();
+  } else if (!isPlaying.value) {
+    play();
   }
 });
 </script>

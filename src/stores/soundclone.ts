@@ -1,5 +1,5 @@
-import { ref, inject, computed } from 'vue';
 import type { Ref } from 'vue';
+import { computed, inject, ref } from 'vue';
 import { defineStore } from 'pinia';
 import type { PlaylistSerializer, SongSerializer } from '@/types/core';
 
@@ -8,6 +8,7 @@ export const useSoundcloneStore = defineStore('soundclone', () => {
   // Data
   const playlists: Ref<PlaylistSerializer[]> = ref([]);
   const songs: Ref<SongSerializer[]> = ref([]);
+  const currentIndex = ref(0);
 
   // Computed
   const feed = computed(() => {
@@ -37,12 +38,25 @@ export const useSoundcloneStore = defineStore('soundclone', () => {
     ]);
   };
 
+  const setCurrentIndex = (index: number) => {
+    currentIndex.value = index;
+  };
+
+  const goToNextSong = () => {
+    if (currentIndex.value < feed.value.length - 1) {
+      currentIndex.value += 1;
+    }
+  };
+
   return {
     playlists,
     songs,
     feed,
+    currentIndex,
     getPlaylists,
     getSongs,
     getFeed,
+    setCurrentIndex,
+    goToNextSong,
   };
 });
