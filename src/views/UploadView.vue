@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { inject, ref } from 'vue';
+import {
+  computed, inject, onMounted, ref,
+} from 'vue';
 
 // Components
 import DropZone from '@/components/FormDropZone.vue';
@@ -11,13 +13,17 @@ import AppButton from '@/components/AppButton.vue';
 import FormInput from '@/components/FormInput.vue';
 import useFileList from '@/compositions/file-list.ts';
 import { FilePreviewStatus, UploadableFile } from '@/types/file.ts';
+import { useSoundcloneStore } from '@/stores/soundclone.ts';
 import type { PlaylistSerializer } from '@/types/core';
+
+const store = useSoundcloneStore();
 
 // Injection
 const axios: any = inject('axios');
 
 const { files, addFiles, removeFile } = useFileList();
 
+const playlists = computed(() => store.playlists);
 const playlist = ref<PlaylistSerializer|null>(null);
 const newPlaylistName = ref<string>('');
 
@@ -79,6 +85,10 @@ async function uploadFiles(): Promise<void> {
 
   await Promise.all(files.value.map((file) => uploadFile(file)));
 }
+
+onMounted(async () => {
+  await store.getPlaylists();
+});
 </script>
 
 <template>
@@ -101,7 +111,15 @@ async function uploadFiles(): Promise<void> {
         <input type="file" id="file-input" multiple @change="onInputChange" class="absolute -left-full" />
       </label>
 
-      <FormInput v-model="newPlaylistName" label="Playlist" />
+      <FormInput v-model="newPlaylistName" label="New playlist" />
+
+      <p>Use an existing playlist</p>
+      <div v-for="p in playlists" :key="p.id">
+        <label :for="p.id">
+          <input type="radio" :value="p" :id="p.id" v-model="playlist">
+          {{ p.name }}
+        </label>
+      </div>
 
       <div v-if="files.length" class="mt-4 lg:w-1/2">
         <FilePreview
