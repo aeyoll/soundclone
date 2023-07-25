@@ -5,7 +5,7 @@ const props = defineProps({
 </script>
 
 <template>
-  <button class="btn" type="button" :class="{ 'btn-sm': props.size === 'sm' }">
+  <button class="btn" type="button" :class="{ 'btn-sm': props.size === 'sm', 'btn-xs': props.size === 'xs' }">
     <slot />
   </button>
 </template>
@@ -34,5 +34,11 @@ const props = defineProps({
   @apply text-xs
     h-8
     px-4;
+}
+
+.btn-xs {
+  @apply text-xs
+    h-6
+    px-2;
 }
 </style>

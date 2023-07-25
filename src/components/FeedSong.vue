@@ -30,8 +30,8 @@ const humanDate = computed(() => {
     <AudioPlayer :song="song" :index="index" />
 
     <div class="flex gap-2 mt-4">
-      <AppButton type="button" size="sm">Edit</AppButton>
-      <AppButton type="button" size="sm">Delete</AppButton>
+      <AppButton type="button" size="xs">Edit</AppButton>
+      <AppButton type="button" size="xs">Delete</AppButton>
     </div>
   </div>
 </template>
