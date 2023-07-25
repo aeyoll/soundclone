@@ -18,7 +18,7 @@ class Song(TimeStampedModel, OrderedModel):
     playlist = models.ForeignKey(
         Playlist,
         related_name='songs',
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         null=True,
         blank=True
     )

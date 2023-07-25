@@ -4,6 +4,7 @@ import { computed, ref } from 'vue';
 import { formatDistance } from 'date-fns';
 import AudioPlayer from '@/components/AudioPlayer.vue';
 import { useSoundcloneStore } from '@/stores/soundclone.ts';
+import AppButton from '@/components/AppButton.vue';
 import type { PlaylistSerializer } from '@/types/core';
 
 const store = useSoundcloneStore();
@@ -32,6 +33,10 @@ const goToNextSong = () => {
     // Otherwise, go to the next song in the playlist
     currentSongIndex.value += 1;
   }
+};
+
+const deletePlaylist = () => {
+  store.deletePlaylist(props.playlist?.id as number);
 };
 </script>
 
@@ -64,6 +69,11 @@ const goToNextSong = () => {
         @click.prevent="currentSongIndex = index">
         {{ song.name }}
       </button>
+    </div>
+
+    <div class="flex gap-2 mt-4">
+      <AppButton type="button" size="xs">Edit</AppButton>
+      <AppButton type="button" size="xs" @click.prevent="deletePlaylist()">Delete</AppButton>
     </div>
   </div>
 </template>
