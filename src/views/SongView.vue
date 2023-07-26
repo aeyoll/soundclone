@@ -14,6 +14,7 @@ import AppButton from '@/components/AppButton.vue';
 import FormFilePreview from '@/components/FormFilePreview.vue';
 import AppSubtitle from '@/components/AppSubtitle.vue';
 import { formatDistance } from 'date-fns';
+import FormInput from '@/components/FormInput.vue';
 
 const axios = inject('axios');
 const route = useRoute();
@@ -22,6 +23,17 @@ const { files, addFiles, removeFile } = useFileList();
 
 const song: Ref<SongSerializer|null> = ref(null);
 const currentVersion: Ref<SongSerializer|VersionSerializer|null> = ref(null);
+const newVersionName = ref<string>('');
+
+const humanDate = computed(() => {
+  const songDate = new Date(song.value?.created as string);
+  return formatDistance(songDate, new Date(), { addSuffix: true });
+});
+
+const getSong = async () => {
+  const { data } = await axios.get(`songs/${route.params.id}/`);
+  song.value = data;
+};
 
 function onInputChange(e): void {
   addFiles(e.target.files);
@@ -36,10 +48,10 @@ async function uploadFile(file: UploadableFile): Promise<void> {
     interface Payload {
       name: string,
       file: File,
-      playlist: number|null,
+      song: number,
     }
     const payload = {
-      name: file.file.name,
+      name: newVersionName.value,
       file: file.file,
       song: song.value?.id,
     } as Payload;
@@ -53,6 +65,10 @@ async function uploadFile(file: UploadableFile): Promise<void> {
     await axios.post('versions/', payload, options);
     // eslint-disable-next-line no-param-reassign
     file.status = FilePreviewStatus.UPLOADED;
+
+    await getSong();
+    newVersionName.value = '';
+    files.value = [];
   } catch (e) {
     // eslint-disable-next-line no-param-reassign
     file.status = FilePreviewStatus.ERROR;
@@ -63,15 +79,9 @@ async function uploadFiles(): Promise<void> {
   await Promise.all(files.value.map((file) => uploadFile(file)));
 }
 
-const humanDate = computed(() => {
-  const songDate = new Date(song.value?.created as string);
-  return formatDistance(songDate, new Date(), { addSuffix: true });
-});
-
 onMounted(async () => {
-  const { data } = await axios.get(`songs/${route.params.id}/`);
-  song.value = data;
-  currentVersion.value = data;
+  await getSong();
+  currentVersion.value = song.value;
 });
 </script>
 
@@ -112,6 +122,8 @@ onMounted(async () => {
     </div>
 
     <AppSubtitle>Add a new version</AppSubtitle>
+
+    <FormInput v-model="newVersionName" label="Version name" class="mb-4" />
 
     <FormDropZone class="drop-area" @files-dropped="addFiles" #default="{ dropZoneActive }" v-if="files.length === 0">
       <label for="file-input" class="text-sm h-48 border flex justify-center rounded items-center mb-4">
