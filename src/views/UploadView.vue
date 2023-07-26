@@ -4,6 +4,7 @@ import {
 } from 'vue';
 
 import AppButton from '@/components/AppButton.vue';
+import AppSubtitle from '@/components/AppSubtitle.vue';
 // File Management
 import AppTitle from '@/components/AppTitle.vue';
 // Components
@@ -111,17 +112,7 @@ onMounted(async () => {
         <input type="file" id="file-input" multiple @change="onInputChange" class="absolute -left-full" />
       </label>
 
-      <FormInput v-model="newPlaylistName" label="New playlist" />
-
-      <p>Use an existing playlist</p>
-      <div v-for="p in playlists" :key="p.id">
-        <label :for="p.id">
-          <input type="radio" :value="p" :id="p.id" v-model="playlist">
-          {{ p.name }}
-        </label>
-      </div>
-
-      <div v-if="files.length" class="mt-4 lg:w-1/2">
+      <div v-if="files.length" class="mb-4">
         <FilePreview
           v-for="file of files"
           :key="file.id"
@@ -130,6 +121,22 @@ onMounted(async () => {
         />
       </div>
     </DropZone>
+
+    <AppSubtitle>Playlist</AppSubtitle>
+
+    <FormInput v-model="newPlaylistName" label="New playlist" />
+
+    <p class="text-slate-500 my-2 text-sm">or</p>
+
+    <div v-if="playlists.length">
+      <p>Use an existing playlist</p>
+      <div v-for="p in playlists" :key="p.id">
+        <label :for="p.id">
+          <input type="radio" :value="p" :id="p.id" v-model="playlist">
+          {{ p.name }}
+        </label>
+      </div>
+    </div>
     <AppButton class="mt-4" @click.prevent="uploadFiles()">Upload</AppButton>
   </main>
 </template>
