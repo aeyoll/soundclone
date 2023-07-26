@@ -9,7 +9,7 @@ class VersionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Version
-        fields = ['id', 'name', 'file', 'slug', 'song', 'created', 'modified']
+        fields = ['id', 'name', 'file', 'slug', 'song', 'waveform', 'created', 'modified']
 
 
 class SongSerializer(OrderedModelSerializer, serializers.ModelSerializer):
