@@ -4,7 +4,7 @@ import {
 } from 'vue';
 import WaveSurfer from 'wavesurfer.js';
 import { useSoundcloneStore } from '@/stores/soundclone.ts';
-import type { PlaylistSerializer, SongSerializer } from '@/types/core';
+import type { PlaylistSerializer, SongSerializer, VersionSerializer } from '@/types/core';
 
 const formatTime = (seconds: number) => {
   const minutes = Math.floor(seconds / 60);
@@ -18,7 +18,7 @@ const store = useSoundcloneStore();
 // Props
 const props = defineProps({
   index: { type: Number, required: true },
-  song: { type: Object as PropType<SongSerializer>, required: true },
+  song: { type: Object as PropType<SongSerializer|VersionSerializer>, required: true },
   playlist: { type: Object as PropType<PlaylistSerializer>, required: false, default: null },
 });
 

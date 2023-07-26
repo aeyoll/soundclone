@@ -27,7 +27,13 @@ const deleteSong = () => {
 <template>
   <div class="py-4 border-b border-slate-900/10 text-sm">
     <div class="flex items-center justify-between mb-4">
-      {{ song.name }}
+      <RouterLink
+        :to="{
+          name: 'song',
+          params: { id: song.id },
+        }">
+        {{ song.name }}
+      </RouterLink>
 
       <div class="text-slate-500 text-xs">
         {{ humanDate }}
