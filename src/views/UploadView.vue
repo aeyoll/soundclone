@@ -27,7 +27,7 @@ const playlists = computed(() => store.playlists);
 const playlist = ref<PlaylistSerializer|null>(null);
 const newPlaylistName = ref<string>('');
 
-function onInputChange(e): void {
+function onInputChange(e: any): void {
   addFiles(e.target.files);
   e.target.value = null;
 }
@@ -40,7 +40,7 @@ async function uploadFile(file: UploadableFile): Promise<void> {
     interface Payload {
       name: string,
       file: File,
-      playlist: number|null,
+      playlist: number|undefined,
     }
     const payload = {
       name: file.file.name,
@@ -131,8 +131,8 @@ onMounted(async () => {
     <div v-if="playlists.length">
       <p>Use an existing playlist</p>
       <div v-for="p in playlists" :key="p.id">
-        <label :for="p.id">
-          <input type="radio" :value="p" :id="p.id" v-model="playlist">
+        <label :for="p.id?.toString()">
+          <input type="radio" :value="p" :id="p.id?.toString()" v-model="playlist">
           {{ p.name }}
         </label>
       </div>

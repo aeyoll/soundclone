@@ -1,6 +1,7 @@
 <script setup lang="ts">
+import type { PropType } from 'vue';
 import {
-  onMounted, PropType, ref, watch,
+  onMounted, ref, watch,
 } from 'vue';
 import WaveSurfer from 'wavesurfer.js';
 
@@ -40,7 +41,7 @@ const time = ref(formatTime(0));
 const duration = ref(formatTime(0));
 
 const canvas = document.createElement('canvas');
-const ctx = canvas.getContext('2d');
+const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
 
 // Define the waveform gradient
 const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height * 1.35);
@@ -83,7 +84,7 @@ const stop = () => {
 const createWavesurfer = () => {
   time.value = formatTime(0);
   wavesurfer.value = WaveSurfer.create({
-    container: waveform.value as string,
+    container: waveform.value as unknown as string,
     waveColor: gradient,
     progressColor: progressGradient,
     barWidth: 2,

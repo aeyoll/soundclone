@@ -67,7 +67,7 @@ const deletePlaylist = () => {
         @click.prevent="currentSongIndex = index">
         {{ song.name }}
         <span class="text-xs text-slate-500">
-          {{ formatHumanDate(song.created) }}
+          {{ formatHumanDate(song.created as string) }}
         </span>
       </button>
     </div>

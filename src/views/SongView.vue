@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import type { Ref } from 'vue';
 import {
   computed,
-  inject, onMounted, Ref, ref,
+  inject, onMounted, ref,
 } from 'vue';
 import { useRoute } from 'vue-router';
 
@@ -17,7 +18,7 @@ import type { SongSerializer, VersionSerializer } from '@/types/core';
 import { FilePreviewStatus, UploadableFile } from '@/types/file';
 import { formatHumanDate } from '@/utils';
 
-const axios = inject('axios');
+const axios: any = inject('axios');
 const route = useRoute();
 
 const { files, addFiles, removeFile } = useFileList();
@@ -92,7 +93,7 @@ onMounted(async () => {
 
     <AudioPlayer :song="currentVersion" :index="0" class="mb-4" />
 
-    <div v-if="song.versions?.length > 0" class="mb-4">
+    <div v-if="song.versions && song.versions?.length > 0" class="mb-4">
       <AppSubtitle>Versions</AppSubtitle>
 
       <div class="border border-slate-200 rounded text-sm">
@@ -111,14 +112,14 @@ onMounted(async () => {
           <button
             class="p-2 w-full text-left flex justify-between items-center"
             :class="{
-              'border-b': index !== song.versions?.length - 1,
+              'border-b': index !== song.versions.length - 1,
               'bg-slate-100': currentVersion === version,
             }"
             type="button"
             @click.prevent="currentVersion = version">
             {{ version.name }}
             <span class="text-xs text-slate-500">
-              {{ formatHumanDate(version.created) }}
+              {{ formatHumanDate(version.created as string) }}
             </span>
           </button>
         </div>
