@@ -40,7 +40,7 @@ const deleteSong = () => {
 
     <AudioPlayer :song="song" :index="index" />
 
-    <div class="flex gap-2 mt-4">
+    <div class="flex justify-end gap-2 mt-4">
       <AppButton type="button" size="xs">Edit</AppButton>
       <AppButton type="button" size="xs" @click.prevent="deleteSong()">Delete</AppButton>
     </div>

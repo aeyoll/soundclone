@@ -1,11 +1,12 @@
 <script setup lang="ts">
 const props = defineProps({
   size: { type: String, default: '' },
+  disabled: { type: Boolean, default: false },
 });
 </script>
 
 <template>
-  <button class="btn" type="button" :class="{ 'btn-sm': props.size === 'sm', 'btn-xs': props.size === 'xs' }">
+  <button :disabled="disabled" class="btn" type="button" :class="{ 'btn-sm': props.size === 'sm', 'btn-xs': props.size === 'xs' }">
     <slot />
   </button>
 </template>
@@ -13,6 +14,7 @@ const props = defineProps({
 <style>
 .btn {
   @apply bg-slate-800 hover:bg-slate-700 text-white;
+  @apply disabled:bg-slate-500;
 
   @apply focus:outline-none
     focus:ring-2
