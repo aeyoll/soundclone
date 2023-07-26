@@ -57,15 +57,18 @@ const deletePlaylist = () => {
       @song-finished="goToNextSong()"
       class="mb-4" />
 
-    <div
-      class="ml-20 border-b border-slate-900/10 py-2 slate-900 p-1"
-      :class="{ 'bg-slate-100': isPlaying && currentSongIndex === index }"
-      v-for="(song, index) in playlist.songs"
-      :key="song.id">
+    <div class="ml-20 border border-slate-200 rounded text-sm">
       <button
+        class="p-2 w-full text-left flex justify-between items-center"
+        :class="{ 'border-b': index !== playlist.songs?.length - 1, 'bg-slate-100': isPlaying && currentSongIndex === index }"
+        v-for="(song, index) in playlist.songs"
+        :key="song.id"
         type="button"
         @click.prevent="currentSongIndex = index">
         {{ song.name }}
+        <span class="text-xs text-slate-500">
+          {{ formatHumanDate(song.created) }}
+        </span>
       </button>
     </div>
 
