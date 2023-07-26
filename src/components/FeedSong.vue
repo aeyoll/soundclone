@@ -1,9 +1,10 @@
 <script setup lang="ts">
+import { formatDistance } from 'date-fns';
 import type { PropType } from 'vue';
 import { computed } from 'vue';
-import { formatDistance } from 'date-fns';
-import AudioPlayer from '@/components/AudioPlayer.vue';
+
 import AppButton from '@/components/AppButton.vue';
+import AudioPlayer from '@/components/AudioPlayer.vue';
 import { useSoundcloneStore } from '@/stores/soundclone';
 import type { SongSerializer } from '@/types/core';
 

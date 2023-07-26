@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
-import AppTitle from '@/components/AppTitle.vue';
-import FeedSong from '@/components/FeedSong.vue';
-import FeedPlaylist from '@/components/FeedPlaylist.vue';
-import { useSoundcloneStore } from '@/stores/soundclone';
 import { storeToRefs } from 'pinia';
+import { onMounted } from 'vue';
+
+import AppTitle from '@/components/AppTitle.vue';
+import FeedPlaylist from '@/components/FeedPlaylist.vue';
+import FeedSong from '@/components/FeedSong.vue';
+import { useSoundcloneStore } from '@/stores/soundclone';
 import type { PlaylistSerializer, SongSerializer } from '@/types/core';
 
 const store = useSoundcloneStore();

@@ -3,18 +3,17 @@ import {
   computed, inject, onMounted, ref,
 } from 'vue';
 
+import AppButton from '@/components/AppButton.vue';
+// File Management
+import AppTitle from '@/components/AppTitle.vue';
 // Components
 import DropZone from '@/components/FormDropZone.vue';
 import FilePreview from '@/components/FormFilePreview.vue';
-
-// File Management
-import AppTitle from '@/components/AppTitle.vue';
-import AppButton from '@/components/AppButton.vue';
 import FormInput from '@/components/FormInput.vue';
 import useFileList from '@/compositions/file-list';
-import { FilePreviewStatus, UploadableFile } from '@/types/file';
 import { useSoundcloneStore } from '@/stores/soundclone';
 import type { PlaylistSerializer } from '@/types/core';
+import { FilePreviewStatus, UploadableFile } from '@/types/file';
 
 const store = useSoundcloneStore();
 

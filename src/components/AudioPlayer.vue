@@ -3,6 +3,7 @@ import {
   onMounted, PropType, ref, watch,
 } from 'vue';
 import WaveSurfer from 'wavesurfer.js';
+
 import { useSoundcloneStore } from '@/stores/soundclone';
 import type { PlaylistSerializer, SongSerializer, VersionSerializer } from '@/types/core';
 

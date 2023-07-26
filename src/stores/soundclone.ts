@@ -1,6 +1,7 @@
+import { defineStore } from 'pinia';
 import type { Ref } from 'vue';
 import { computed, inject, ref } from 'vue';
-import { defineStore } from 'pinia';
+
 import type { PlaylistSerializer, SongSerializer } from '@/types/core';
 import { removeObjectWithId } from '@/utils';
 

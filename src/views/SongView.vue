@@ -1,20 +1,21 @@
 <script setup lang="ts">
-import AppTitle from '@/components/AppTitle.vue';
+import { formatDistance } from 'date-fns';
 import {
   computed,
   inject, onMounted, Ref, ref,
 } from 'vue';
 import { useRoute } from 'vue-router';
-import AudioPlayer from '@/components/AudioPlayer.vue';
-import type { SongSerializer, VersionSerializer } from '@/types/core';
-import FormDropZone from '@/components/FormDropZone.vue';
-import useFileList from '@/compositions/file-list';
-import { FilePreviewStatus, UploadableFile } from '@/types/file';
+
 import AppButton from '@/components/AppButton.vue';
-import FormFilePreview from '@/components/FormFilePreview.vue';
 import AppSubtitle from '@/components/AppSubtitle.vue';
-import { formatDistance } from 'date-fns';
+import AppTitle from '@/components/AppTitle.vue';
+import AudioPlayer from '@/components/AudioPlayer.vue';
+import FormDropZone from '@/components/FormDropZone.vue';
+import FormFilePreview from '@/components/FormFilePreview.vue';
 import FormInput from '@/components/FormInput.vue';
+import useFileList from '@/compositions/file-list';
+import type { SongSerializer, VersionSerializer } from '@/types/core';
+import { FilePreviewStatus, UploadableFile } from '@/types/file';
 
 const axios = inject('axios');
 const route = useRoute();

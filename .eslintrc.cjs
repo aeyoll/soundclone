@@ -11,6 +11,7 @@ module.exports = {
   'ignorePatterns': ['src/types/core/index.ts'],
   'plugins': [
     'import',
+    'simple-import-sort',
   ],
   'extends': [
     'plugin:vue/vue3-essential',
@@ -23,6 +24,8 @@ module.exports = {
     ecmaVersion: 'latest'
   },
   'rules': {
+    'simple-import-sort/imports': 'error',
+    'simple-import-sort/exports': 'error',
     'quotes': ['error', 'single'],
     'import/extensions': [
       'error',
