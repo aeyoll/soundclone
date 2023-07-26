@@ -4,7 +4,7 @@ import { computed } from 'vue';
 import { formatDistance } from 'date-fns';
 import AudioPlayer from '@/components/AudioPlayer.vue';
 import AppButton from '@/components/AppButton.vue';
-import { useSoundcloneStore } from '@/stores/soundclone.ts';
+import { useSoundcloneStore } from '@/stores/soundclone';
 import type { SongSerializer } from '@/types/core';
 
 const store = useSoundcloneStore();

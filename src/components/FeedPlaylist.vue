@@ -3,7 +3,7 @@ import type { PropType } from 'vue';
 import { computed, ref } from 'vue';
 import { formatDistance } from 'date-fns';
 import AudioPlayer from '@/components/AudioPlayer.vue';
-import { useSoundcloneStore } from '@/stores/soundclone.ts';
+import { useSoundcloneStore } from '@/stores/soundclone';
 import AppButton from '@/components/AppButton.vue';
 import type { PlaylistSerializer } from '@/types/core';
 

@@ -1,6 +1,9 @@
 export enum FilePreviewStatus {
+  // eslint-disable-next-line no-unused-vars
   LOADING,
+  // eslint-disable-next-line no-unused-vars
   UPLOADED,
+  // eslint-disable-next-line no-unused-vars
   ERROR,
 }
 

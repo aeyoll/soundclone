@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { FilePreviewStatus, UploadableFile } from '@/types/file.ts';
+import { FilePreviewStatus, UploadableFile } from '@/types/file';
 
 defineProps({
   file: { type: UploadableFile, required: true },

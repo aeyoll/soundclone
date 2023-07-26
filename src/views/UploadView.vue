@@ -11,9 +11,9 @@ import FilePreview from '@/components/FormFilePreview.vue';
 import ViewTitle from '@/components/AppTitle.vue';
 import AppButton from '@/components/AppButton.vue';
 import FormInput from '@/components/FormInput.vue';
-import useFileList from '@/compositions/file-list.ts';
-import { FilePreviewStatus, UploadableFile } from '@/types/file.ts';
-import { useSoundcloneStore } from '@/stores/soundclone.ts';
+import useFileList from '@/compositions/file-list';
+import { FilePreviewStatus, UploadableFile } from '@/types/file';
+import { useSoundcloneStore } from '@/stores/soundclone';
 import type { PlaylistSerializer } from '@/types/core';
 
 const store = useSoundcloneStore();

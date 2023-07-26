@@ -3,7 +3,7 @@ import { onMounted } from 'vue';
 import ViewTitle from '@/components/AppTitle.vue';
 import FeedSong from '@/components/FeedSong.vue';
 import FeedPlaylist from '@/components/FeedPlaylist.vue';
-import { useSoundcloneStore } from '@/stores/soundclone.ts';
+import { useSoundcloneStore } from '@/stores/soundclone';
 import { storeToRefs } from 'pinia';
 import type { PlaylistSerializer, SongSerializer } from '@/types/core';
 

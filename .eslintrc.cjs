@@ -1,8 +1,14 @@
 /* eslint-env node */
 require('@rushstack/eslint-patch/modern-module-resolution')
 
+const extensions = ['.js', '.jsx', '.ts', '.tsx', '.vue'];
+
 module.exports = {
   root: true,
+  env: {
+    node: true,
+  },
+  'ignorePatterns': ['src/types/core/index.ts'],
   'plugins': [
     'import',
   ],
@@ -27,7 +33,7 @@ module.exports = {
         jsx: 'never',
         ts: 'never',
         tsx: 'never',
-        vue: 'never'
+        vue: 'always'
       }
     ],
     'no-shadow': 'off',
@@ -38,12 +44,13 @@ module.exports = {
       alias: {
         map: [
           ['@', './src'],
-        ]
+        ],
+        'extensions': extensions
       },
       'node': {
-        'extensions': ['.js', '.jsx', '.ts', '.tsx', '.vue']
+        'extensions': extensions
       }
     },
-    'import/extensions': ['.js', '.jsx', '.ts', '.tsx', '.vue']
+    'import/extensions': extensions
   },
 }
