@@ -13,7 +13,7 @@ const props = defineProps({
 
 <style>
 .btn {
-  @apply bg-slate-800 hover:bg-slate-700 text-white;
+  @apply bg-slate-700 hover:bg-slate-800 text-white;
   @apply disabled:bg-slate-500;
 
   @apply focus:outline-none

@@ -171,14 +171,14 @@ watch(() => store.currentIndex, (newIndex: number) => {
   }
 
   .btn {
-    @apply aspect-square rounded-full bg-slate-800 text-white p-2 h-16 w-16;
+    @apply aspect-square rounded-full bg-slate-700 hover:bg-slate-800 text-white p-2 h-16 w-16;
   }
 
   .time {
     @apply absolute z-20 top-1/2 mt-1 -translate-y-1/2;
     @apply p-1;
     @apply rounded;
-    @apply bg-slate-800 text-white;
+    @apply bg-slate-700 text-white;
     @apply text-xs;
   }
 
