@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { formatDistance } from 'date-fns';
 import type { PropType } from 'vue';
 import { computed, ref } from 'vue';
 
@@ -7,6 +6,7 @@ import AppButton from '@/components/AppButton.vue';
 import AudioPlayer from '@/components/AudioPlayer.vue';
 import { useSoundcloneStore } from '@/stores/soundclone';
 import type { PlaylistSerializer } from '@/types/core';
+import { formatHumanDate } from '@/utils';
 
 const store = useSoundcloneStore();
 
@@ -18,10 +18,7 @@ const props = defineProps({
 const isPlaying = ref(false);
 const currentSongIndex = ref(0);
 
-const humanDate = computed(() => {
-  const songDate = new Date(props.playlist?.created as string);
-  return formatDistance(songDate, new Date(), { addSuffix: true });
-});
+const humanDate = computed(() => formatHumanDate(props.playlist?.created as string));
 const playlistLength = computed(() => props.playlist?.songs.length);
 const isLastSongPlaying = computed(() => currentSongIndex.value === playlistLength.value - 1);
 

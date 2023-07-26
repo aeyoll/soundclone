@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { formatDistance } from 'date-fns';
 import type { PropType } from 'vue';
 import { computed } from 'vue';
 
@@ -7,6 +6,7 @@ import AppButton from '@/components/AppButton.vue';
 import AudioPlayer from '@/components/AudioPlayer.vue';
 import { useSoundcloneStore } from '@/stores/soundclone';
 import type { SongSerializer } from '@/types/core';
+import { formatHumanDate } from '@/utils';
 
 const store = useSoundcloneStore();
 
@@ -15,10 +15,7 @@ const props = defineProps({
   index: { type: Number, required: true },
 });
 
-const humanDate = computed(() => {
-  const songDate = new Date(props.song?.created as string);
-  return formatDistance(songDate, new Date(), { addSuffix: true });
-});
+const humanDate = computed(() => formatHumanDate(props.song?.created as string));
 
 const deleteSong = () => {
   store.deleteSong(props.song?.id as number);

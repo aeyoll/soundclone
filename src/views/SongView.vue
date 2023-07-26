@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { formatDistance } from 'date-fns';
 import {
   computed,
   inject, onMounted, Ref, ref,
@@ -16,6 +15,7 @@ import FormInput from '@/components/FormInput.vue';
 import useFileList from '@/compositions/file-list';
 import type { SongSerializer, VersionSerializer } from '@/types/core';
 import { FilePreviewStatus, UploadableFile } from '@/types/file';
+import { formatHumanDate } from '@/utils';
 
 const axios = inject('axios');
 const route = useRoute();
@@ -26,10 +26,7 @@ const song: Ref<SongSerializer|null> = ref(null);
 const currentVersion: Ref<SongSerializer|VersionSerializer|null> = ref(null);
 const newVersionName = ref<string>('');
 
-const humanDate = computed(() => {
-  const songDate = new Date(song.value?.created as string);
-  return formatDistance(songDate, new Date(), { addSuffix: true });
-});
+const humanDate = computed(() => formatHumanDate(song.value?.created as string));
 
 const getSong = async () => {
   const { data } = await axios.get(`songs/${route.params.id}/`);
@@ -100,16 +97,19 @@ onMounted(async () => {
 
       <div class="border border-slate-200 rounded text-sm">
         <button
-          class="p-2 border-b w-full text-left"
+          class="p-2 border-b w-full text-left flex justify-between items-center"
           :class="{ 'bg-slate-100': currentVersion === song }"
           type="button"
           @click.prevent="currentVersion = song">
-          {{ song.name }}
+          Original
+          <span class="text-xs text-slate-500">
+            {{ humanDate }}
+          </span>
         </button>
 
         <div v-for="(version, index) in song.versions" :key="version.id">
           <button
-            class="p-2 w-full text-left"
+            class="p-2 w-full text-left flex justify-between items-center"
             :class="{
               'border-b': index !== song.versions?.length - 1,
               'bg-slate-100': currentVersion === version,
@@ -117,6 +117,9 @@ onMounted(async () => {
             type="button"
             @click.prevent="currentVersion = version">
             {{ version.name }}
+            <span class="text-xs text-slate-500">
+              {{ formatHumanDate(version.created) }}
+            </span>
           </button>
         </div>
       </div>
@@ -143,7 +146,7 @@ onMounted(async () => {
       </label>
     </FormDropZone>
 
-    <div v-if="files.length" class="mt-4 lg:w-1/2">
+    <div v-if="files.length" class="mb-4 lg:w-1/2">
       <FormFilePreview
         v-for="file of files"
         :key="file.id"
@@ -151,6 +154,6 @@ onMounted(async () => {
         @remove="removeFile"
       />
     </div>
-    <AppButton class="mt-4" @click.prevent="uploadFiles()">Upload</AppButton>
+    <AppButton class="mb-4" @click.prevent="uploadFiles()">Upload</AppButton>
   </main>
 </template>
