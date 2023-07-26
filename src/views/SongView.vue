@@ -87,14 +87,27 @@ onMounted(async () => {
     <div v-if="song.versions?.length > 0" class="mb-4">
       <AppSubtitle>Versions</AppSubtitle>
 
-      <button type="button" @click.prevent="currentVersion = song">
-        {{ song.name }}
-      </button>
-
-      <div v-for="version in song.versions" :key="version.id">
-        <button type="button" @click.prevent="currentVersion = version">
-          {{ version.name }}
+      <div class="border border-slate-200 rounded text-sm">
+        <button
+          class="p-2 border-b w-full text-left"
+          :class="{ 'bg-slate-100': currentVersion === song }"
+          type="button"
+          @click.prevent="currentVersion = song">
+          {{ song.name }}
         </button>
+
+        <div v-for="(version, index) in song.versions" :key="version.id">
+          <button
+            class="p-2 w-full text-left"
+            :class="{
+              'border-b': index !== song.versions?.length - 1,
+              'bg-slate-100': currentVersion === version,
+            }"
+            type="button"
+            @click.prevent="currentVersion = version">
+            {{ version.name }}
+          </button>
+        </div>
       </div>
     </div>
 
