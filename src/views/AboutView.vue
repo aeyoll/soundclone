@@ -4,6 +4,6 @@ import AppTitle from '@/components/AppTitle.vue';
 
 <template>
   <main>
-    <AppTitle>This is an about page</AppTitle>
+    <AppTitle class="mb-4">This is an about page</AppTitle>
   </main>
 </template>

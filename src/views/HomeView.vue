@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
-import ViewTitle from '@/components/AppTitle.vue';
+import AppTitle from '@/components/AppTitle.vue';
 import FeedSong from '@/components/FeedSong.vue';
 import FeedPlaylist from '@/components/FeedPlaylist.vue';
 import { useSoundcloneStore } from '@/stores/soundclone';
@@ -17,7 +17,7 @@ onMounted(async () => {
 
 <template>
   <main>
-    <ViewTitle>Feed</ViewTitle>
+    <AppTitle class="mb-4">Feed</AppTitle>
 
     <div v-if="feed.length > 0" class="lg:w-2/3">
       <div v-for="(item, index) in feed" :key="item.id">

@@ -8,7 +8,7 @@ import DropZone from '@/components/FormDropZone.vue';
 import FilePreview from '@/components/FormFilePreview.vue';
 
 // File Management
-import ViewTitle from '@/components/AppTitle.vue';
+import AppTitle from '@/components/AppTitle.vue';
 import AppButton from '@/components/AppButton.vue';
 import FormInput from '@/components/FormInput.vue';
 import useFileList from '@/compositions/file-list';
@@ -94,7 +94,7 @@ onMounted(async () => {
 
 <template>
   <main class=" lg:w-1/2">
-    <ViewTitle>Upload</ViewTitle>
+    <AppTitle class="mb-4">Upload</AppTitle>
 
     <DropZone class="drop-area" @files-dropped="addFiles" #default="{ dropZoneActive }">
       <label for="file-input" class="text-sm h-48 border flex justify-center rounded items-center mb-4">

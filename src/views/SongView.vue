@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import AppTitle from '@/components/AppTitle.vue';
 import {
+  computed,
   inject, onMounted, Ref, ref,
 } from 'vue';
 import { useRoute } from 'vue-router';
@@ -12,6 +13,7 @@ import { FilePreviewStatus, UploadableFile } from '@/types/file';
 import AppButton from '@/components/AppButton.vue';
 import FormFilePreview from '@/components/FormFilePreview.vue';
 import AppSubtitle from '@/components/AppSubtitle.vue';
+import { formatDistance } from 'date-fns';
 
 const axios = inject('axios');
 const route = useRoute();
@@ -61,6 +63,11 @@ async function uploadFiles(): Promise<void> {
   await Promise.all(files.value.map((file) => uploadFile(file)));
 }
 
+const humanDate = computed(() => {
+  const songDate = new Date(song.value?.created as string);
+  return formatDistance(songDate, new Date(), { addSuffix: true });
+});
+
 onMounted(async () => {
   const { data } = await axios.get(`songs/${route.params.id}/`);
   song.value = data;
@@ -70,7 +77,10 @@ onMounted(async () => {
 
 <template>
   <main v-if="song && currentVersion" class="lg:w-2/3">
-    <AppTitle>{{ song.name }}</AppTitle>
+    <div class="flex items-center justify-between mb-4">
+      <AppTitle>{{ song.name }}</AppTitle>
+      <div class="text-slate-500 text-xs">{{ humanDate }}</div>
+    </div>
 
     <AudioPlayer :song="currentVersion" :index="0" class="mb-4" />
 
