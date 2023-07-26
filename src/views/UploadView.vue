@@ -65,6 +65,7 @@ async function uploadFile(file: UploadableFile): Promise<void> {
     file.status = FilePreviewStatus.ERROR;
   }
 }
+
 async function createPlaylist(): Promise<void> {
   try {
     const payload = {
