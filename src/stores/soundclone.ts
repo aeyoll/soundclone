@@ -36,6 +36,11 @@ export const useSoundcloneStore = defineStore('soundclone', () => {
   const deleteSong = async (songId: number) => {
     try {
       await axios.delete(`songs/${songId}/`);
+      playlists.value = playlists.value.map((playlist) => {
+        const newPlaylist = structuredClone(playlist);
+        newPlaylist.songs = removeObjectWithId(playlist.songs, songId);
+        return newPlaylist;
+      });
       songs.value = removeObjectWithId(songs.value, songId);
     } catch (e) {
       // @TODO: handle error
