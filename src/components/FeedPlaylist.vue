@@ -19,7 +19,7 @@ const isPlaying = ref(false);
 const currentSongIndex = ref(0);
 
 const humanDate = computed(() => formatHumanDate(props.playlist?.created as string));
-const playlistLength = computed(() => props.playlist?.songs.length);
+const playlistLength = computed(() => ((props.playlist?.songs) ? props.playlist?.songs.length : 0));
 const isLastSongPlaying = computed(() => currentSongIndex.value === playlistLength.value - 1);
 
 const goToNextSong = () => {
@@ -49,7 +49,7 @@ const deletePlaylist = () => {
     </div>
 
     <AudioPlayer
-      v-if="playlist.songs[currentSongIndex]"
+      v-if="playlist.songs && playlist.songs[currentSongIndex]"
       :song="playlist.songs[currentSongIndex]"
       :playlist="playlist"
       :index="index"
@@ -57,7 +57,7 @@ const deletePlaylist = () => {
       @song-finished="goToNextSong()"
       class="mb-4" />
 
-    <div class="ml-20 border border-slate-200 rounded text-sm">
+    <div class="ml-20 border border-slate-200 rounded text-sm" v-if="playlist.songs">
       <button
         class="p-2 w-full text-left flex justify-between items-center"
         :class="{ 'border-b': index !== playlist.songs?.length - 1, 'bg-slate-100': isPlaying && currentSongIndex === index }"
@@ -72,7 +72,7 @@ const deletePlaylist = () => {
       </button>
     </div>
 
-    <div class="flex justify-end gap-2 mt-4">
+    <div class="flex justify-end gap-2 mt-4" v-if="playlist.songs">
       <AppButton size="xs" :disabled="currentSongIndex === 0" @click.prevent="currentSongIndex -= 1">Prev</AppButton>
       <AppButton size="xs" :disabled="currentSongIndex === playlist.songs.length - 1" @click.prevent="currentSongIndex += 1">Next</AppButton>
       <AppButton size="xs">Edit</AppButton>

@@ -7,7 +7,7 @@ export interface PlaylistSerializer {
     * @maxLength 128
     */
     name: string;
-    songs: SongSerializer[];
+    songs?: SongSerializer[];
     /**
     * @format date-time
     */
@@ -30,6 +30,7 @@ export interface SongSerializer {
     file: File;
     slug?: string;
     waveform?: any | null;
+    playlist?: number | string | null;
     versions?: VersionSerializer[];
     /**
     * @format date-time
@@ -52,6 +53,8 @@ export interface VersionSerializer {
     name: string;
     file: File;
     slug?: string;
+    song: number | string;
+    waveform?: any | null;
     /**
     * @format date-time
     */

@@ -30,6 +30,7 @@ const updateSong = () => {
   } as SongSerializer;
 
   // Delete "file" from the payload
+  // @ts-ignore
   delete payload.file;
 
   // Update using the API

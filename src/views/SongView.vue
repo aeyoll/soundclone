@@ -34,7 +34,7 @@ const getSong = async () => {
   song.value = data;
 };
 
-function onInputChange(e): void {
+function onInputChange(e: any): void {
   addFiles(e.target.files);
   e.target.value = null;
 }

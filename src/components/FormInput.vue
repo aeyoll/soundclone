@@ -15,6 +15,6 @@ defineEmits(['update:modelValue']);
       class="mt-1 block w-full rounded border-slate-200"
       placeholder=""
       :value="modelValue"
-      @input="$emit('update:modelValue', $event.target.value)">
+      @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)">
   </label>
 </template>

@@ -41,10 +41,15 @@ export const useSoundcloneStore = defineStore('soundclone', () => {
 
       // Update song in playlists
       playlists.value = playlists.value.map((playlist) => {
-        const index = playlist.songs.findIndex((s) => s.id === songId);
+        if (!playlist.songs) {
+          return playlist;
+        }
+
+        const index = (playlist.songs).findIndex((s) => s.id === songId);
 
         if (index > -1) {
           const newPlaylist = { ...playlist };
+          // @ts-ignore
           newPlaylist.songs = newPlaylist.songs.map((s) => (s.id === songId ? data : s));
           return newPlaylist;
         }
@@ -68,9 +73,13 @@ export const useSoundcloneStore = defineStore('soundclone', () => {
     try {
       await axios.delete(`songs/${songId}/`);
       playlists.value = playlists.value.map((playlist) => {
+        if (!playlist.songs) {
+          return playlist;
+        }
+
         const index = playlist.songs.findIndex((s) => s.id === songId);
 
-        if (index > -1) {
+        if (index > -1 && playlist.songs?.length) {
           const newPlaylist = { ...playlist };
           newPlaylist.songs = removeObjectWithId(playlist.songs, songId);
           return newPlaylist;
