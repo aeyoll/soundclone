@@ -1,6 +1,8 @@
 import { defineStore } from 'pinia';
 import type { Ref } from 'vue';
-import { computed, inject, ref } from 'vue';
+import {
+  computed, inject, ref,
+} from 'vue';
 
 import type { PlaylistSerializer, SongSerializer } from '@/types/core';
 import { removeObjectWithId } from '@/utils';
@@ -33,16 +35,53 @@ export const useSoundcloneStore = defineStore('soundclone', () => {
     songs.value = data;
   };
 
+  const updateSong = async (songId: number, song: SongSerializer) => {
+    try {
+      const { data } = await axios.patch(`songs/${songId}/`, song);
+
+      // Update song in playlists
+      playlists.value = playlists.value.map((playlist) => {
+        const index = playlist.songs.findIndex((s) => s.id === songId);
+
+        if (index > -1) {
+          const newPlaylist = { ...playlist };
+          newPlaylist.songs = newPlaylist.songs.map((s) => (s.id === songId ? data : s));
+          return newPlaylist;
+        }
+
+        return playlist;
+      });
+
+      // Update song
+      const index = songs.value.findIndex((s) => s.id === songId);
+
+      if (index > -1) {
+        songs.value[index] = data;
+      }
+    } catch (e) {
+      console.log(e);
+      // @TODO: handle error
+    }
+  };
+
   const deleteSong = async (songId: number) => {
     try {
       await axios.delete(`songs/${songId}/`);
       playlists.value = playlists.value.map((playlist) => {
-        const newPlaylist = structuredClone(playlist);
-        newPlaylist.songs = removeObjectWithId(playlist.songs, songId);
-        return newPlaylist;
+        const index = playlist.songs.findIndex((s) => s.id === songId);
+
+        if (index > -1) {
+          const newPlaylist = { ...playlist };
+          newPlaylist.songs = removeObjectWithId(playlist.songs, songId);
+          return newPlaylist;
+        }
+
+        return playlist;
       });
+
       songs.value = removeObjectWithId(songs.value, songId);
     } catch (e) {
+      console.log(e);
       // @TODO: handle error
     }
   };
@@ -82,6 +121,7 @@ export const useSoundcloneStore = defineStore('soundclone', () => {
     currentIndex,
     getPlaylists,
     getSongs,
+    updateSong,
     deleteSong,
     deletePlaylist,
     getFeed,
