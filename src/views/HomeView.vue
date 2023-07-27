@@ -31,7 +31,7 @@ onMounted(async () => {
         </div>
       </div>
     </div>
-    <div v-else class="alert alert-danger">
+    <div v-else class="bg-yellow-100 text-xs p-4 rounded lg:w-1/2">
       No feed
     </div>
   </main>
