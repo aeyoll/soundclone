@@ -3,8 +3,10 @@ import type { PropType } from 'vue';
 import { computed, ref } from 'vue';
 
 import AppButton from '@/components/AppButton.vue';
+import AppModal from '@/components/AppModal.vue';
+import AppSubtitle from '@/components/AppSubtitle.vue';
 import AudioPlayer from '@/components/AudioPlayer.vue';
-import FormInput from '@/components/FormInput.vue';
+import SongEditForm from '@/components/SongEditForm.vue';
 import { useSoundcloneStore } from '@/stores/soundclone';
 import type { SongSerializer } from '@/types/core';
 import { formatHumanDate } from '@/utils';
@@ -12,6 +14,7 @@ import { formatHumanDate } from '@/utils';
 const store = useSoundcloneStore();
 
 const newSongName = ref('');
+const isOpen = ref(false);
 
 const props = defineProps({
   song: { type: Object as PropType<SongSerializer>, required: true },
@@ -19,23 +22,6 @@ const props = defineProps({
 });
 
 const humanDate = computed(() => formatHumanDate(props.song?.created as string));
-
-const updateSong = () => {
-  // Merge the existing song with its new name
-  const payload = {
-    ...props.song,
-    ...{
-      name: newSongName.value,
-    },
-  } as SongSerializer;
-
-  // Delete "file" from the payload
-  // @ts-ignore
-  delete payload.file;
-
-  // Update using the API
-  store.updateSong(props.song?.id as number, payload);
-};
 
 const deleteSong = () => {
   store.deleteSong(props.song?.id as number);
@@ -60,10 +46,14 @@ const deleteSong = () => {
 
     <AudioPlayer :song="song" :index="index" />
 
-    <FormInput v-model="newSongName" label="Name" />
+    <!-- Use the modal component -->
+    <AppModal :isOpen="isOpen" @update:isOpen="isOpen = $event">
+      <AppSubtitle>Edit song</AppSubtitle>
+      <SongEditForm :song="song" @update:song="isOpen = false" />
+    </AppModal>
 
     <div class="flex justify-end gap-2 mt-4">
-      <AppButton type="button" size="xs" @click.prevent="updateSong()">Edit</AppButton>
+      <AppButton type="button" size="xs" @click.prevent="isOpen = true;">Edit</AppButton>
       <AppButton type="button" size="xs" @click.prevent="deleteSong()">Delete</AppButton>
     </div>
   </div>
