@@ -1,5 +1,5 @@
 <template>
-  <transition name="modal-fade">
+  <transition>
     <div v-if="isOpen" class="fixed inset-0 z-50 flex items-center justify-center w-full h-full bg-opacity-50 bg-black">
       <div class="relative z-50 w-full max-w-md p-6 bg-white rounded-lg shadow-lg">
         <button type="button" @click.prevent="closeModal" class="absolute right-4 top-4 bg-transparent">x</button>
@@ -24,10 +24,13 @@ const closeModal = () => {
 </script>
 
 <style>
-.modal-fade-enter-active, .modal-fade-leave-active {
-  transition: opacity 3.3s ease;
+.v-enter-active,
+.v-leave-active {
+  @apply transition-opacity duration-300;
 }
-.modal-fade-enter, .modal-fade-leave-to /* .modal-fade-leave-active below version 2.1.8 */ {
+
+.v-enter-from,
+.v-leave-to {
   opacity: 0;
 }
 </style>
