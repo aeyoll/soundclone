@@ -73,8 +73,10 @@ const deletePlaylist = () => {
     </div>
 
     <div class="flex justify-end gap-2 mt-4" v-if="playlist.songs">
-      <AppButton size="xs" :disabled="currentSongIndex === 0" @click.prevent="currentSongIndex -= 1">Prev</AppButton>
-      <AppButton size="xs" :disabled="currentSongIndex === playlist.songs.length - 1" @click.prevent="currentSongIndex += 1">Next</AppButton>
+      <div v-if="playlist.songs.length > 1">
+        <AppButton size="xs" :disabled="currentSongIndex === 0" @click.prevent="currentSongIndex -= 1">Prev</AppButton>
+        <AppButton size="xs" :disabled="currentSongIndex === playlist.songs.length - 1" @click.prevent="currentSongIndex += 1">Next</AppButton>
+      </div>
       <AppButton size="xs">Edit</AppButton>
       <AppButton size="xs" @click.prevent="deletePlaylist()">Delete</AppButton>
     </div>

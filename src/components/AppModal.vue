@@ -22,3 +22,12 @@ const closeModal = () => {
   emit('update:isOpen', false);
 };
 </script>
+
+<style>
+.modal-fade-enter-active, .modal-fade-leave-active {
+  transition: opacity 3.3s ease;
+}
+.modal-fade-enter, .modal-fade-leave-to /* .modal-fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+</style>
