@@ -4,16 +4,16 @@ import { computed, PropType, ref } from 'vue';
 import AppButton from '@/components/AppButton.vue';
 import AppSubtitle from '@/components/AppSubtitle.vue';
 import FormInput from '@/components/FormInput.vue';
-import { useSoundcloneStore } from '@/stores/soundclone';
-import type { PlaylistSerializer, SongSerializer } from '@/types/core';
+import usePlaylist from '@/compositions/playlist';
+import { SongPayload, useSoundcloneStore } from '@/stores/soundclone';
+import type { SongSerializer } from '@/types/core';
 
 const store = useSoundcloneStore();
+const { playlist, newPlaylistName, createPlaylist } = usePlaylist();
 
 const newSongName = ref('');
 
 const playlists = computed(() => store.playlists);
-const playlist = ref<PlaylistSerializer|null>(null);
-const newPlaylistName = ref<string>('');
 
 const props = defineProps({
   song: { type: Object as PropType<SongSerializer>, required: true },
@@ -21,21 +21,29 @@ const props = defineProps({
 
 const emit = defineEmits(['update:song']);
 
-const updateSong = () => {
+const updateSong = async () => {
+  if (newPlaylistName.value) {
+    await createPlaylist();
+  }
+
   // Merge the existing song with its new name
   const payload = {
     ...props.song,
     ...{
       name: newSongName.value,
     },
-  } as SongSerializer;
+  } as SongPayload;
+
+  if (playlist.value) {
+    payload.playlist = playlist.value?.id;
+  }
 
   // Delete "file" from the payload
   // @ts-ignore
   delete payload.file;
 
   // Update using the API
-  store.updateSong(props.song?.id as number, payload);
+  await store.updateSong(props.song?.id as number, payload);
 
   emit('update:song');
 };

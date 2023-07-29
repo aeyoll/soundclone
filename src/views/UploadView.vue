@@ -12,8 +12,8 @@ import DropZone from '@/components/FormDropZone.vue';
 import FilePreview from '@/components/FormFilePreview.vue';
 import FormInput from '@/components/FormInput.vue';
 import useFileList from '@/compositions/file-list';
-import { useSoundcloneStore } from '@/stores/soundclone';
-import type { PlaylistSerializer } from '@/types/core';
+import usePlaylist from '@/compositions/playlist';
+import { SongPayload, useSoundcloneStore } from '@/stores/soundclone';
 import { FilePreviewStatus, UploadableFile } from '@/types/file';
 
 const store = useSoundcloneStore();
@@ -22,10 +22,9 @@ const store = useSoundcloneStore();
 const axios: any = inject('axios');
 
 const { files, addFiles, removeFile } = useFileList();
+const { playlist, newPlaylistName, createPlaylist } = usePlaylist();
 
 const playlists = computed(() => store.playlists);
-const playlist = ref<PlaylistSerializer|null>(null);
-const newPlaylistName = ref<string>('');
 
 function onInputChange(e: any): void {
   addFiles(e.target.files);
@@ -37,15 +36,10 @@ async function uploadFile(file: UploadableFile): Promise<void> {
   file.status = FilePreviewStatus.LOADING;
 
   try {
-    interface Payload {
-      name: string,
-      file: File,
-      playlist: number|undefined,
-    }
     const payload = {
       name: file.file.name,
       file: file.file,
-    } as Payload;
+    } as SongPayload;
 
     if (playlist.value) {
       payload.playlist = playlist.value?.id;
@@ -63,19 +57,6 @@ async function uploadFile(file: UploadableFile): Promise<void> {
   } catch (e) {
     // eslint-disable-next-line no-param-reassign
     file.status = FilePreviewStatus.ERROR;
-  }
-}
-
-async function createPlaylist(): Promise<void> {
-  try {
-    const payload = {
-      name: newPlaylistName.value,
-    };
-
-    const { data } = await axios.post('playlists/', payload);
-    playlist.value = data;
-  } catch (e) {
-    // @TODO: handle error
   }
 }
 

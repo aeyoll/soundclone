@@ -7,6 +7,12 @@ import {
 import type { PlaylistSerializer, SongSerializer } from '@/types/core';
 import { removeObjectWithId } from '@/utils';
 
+export interface SongPayload {
+  name: string,
+  file: File | undefined,
+  playlist: number | undefined,
+}
+
 // eslint-disable-next-line import/prefer-default-export
 export const useSoundcloneStore = defineStore('soundclone', () => {
   // Data
@@ -35,7 +41,7 @@ export const useSoundcloneStore = defineStore('soundclone', () => {
     songs.value = data;
   };
 
-  const updateSong = async (songId: number, song: SongSerializer) => {
+  const updateSong = async (songId: number, song: SongPayload) => {
     try {
       const { data } = await axios.patch(`songs/${songId}/`, song);
 
