@@ -2,6 +2,7 @@
 import {
   computed, inject, onMounted, ref,
 } from 'vue';
+import { useRouter } from 'vue-router';
 
 import AppButton from '@/components/AppButton.vue';
 import AppSubtitle from '@/components/AppSubtitle.vue';
@@ -9,7 +10,7 @@ import AppSubtitle from '@/components/AppSubtitle.vue';
 import AppTitle from '@/components/AppTitle.vue';
 // Components
 import DropZone from '@/components/FormDropZone.vue';
-import FilePreview from '@/components/FormFilePreview.vue';
+import FormFilePreview from '@/components/FormFilePreview.vue';
 import FormInput from '@/components/FormInput.vue';
 import useFileList from '@/compositions/file-list';
 import usePlaylist from '@/compositions/playlist';
@@ -23,8 +24,11 @@ const axios: any = inject('axios');
 
 const { files, addFiles, removeFile } = useFileList();
 const { playlist, newPlaylistName, createPlaylist } = usePlaylist();
+const router = useRouter();
 
 const playlists = computed(() => store.playlists);
+
+const uploading = ref(false);
 
 function onInputChange(e: any): void {
   addFiles(e.target.files);
@@ -61,11 +65,16 @@ async function uploadFile(file: UploadableFile): Promise<void> {
 }
 
 async function uploadFiles(): Promise<void> {
+  uploading.value = true;
+
   if (newPlaylistName.value) {
     await createPlaylist();
   }
 
   await Promise.all(files.value.map((file) => uploadFile(file)));
+
+  uploading.value = false;
+  await router.push({ name: 'home' });
 }
 
 onMounted(async () => {
@@ -94,7 +103,7 @@ onMounted(async () => {
       </label>
 
       <div v-if="files.length" class="mb-4">
-        <FilePreview
+        <FormFilePreview
           v-for="file of files"
           :key="file.id"
           :file="file"
@@ -117,6 +126,6 @@ onMounted(async () => {
         </label>
       </div>
     </div>
-    <AppButton class="mt-4" @click.prevent="uploadFiles()">Upload</AppButton>
+    <AppButton class="mt-4" @click.prevent="uploadFiles()" :disabled="uploading">Upload</AppButton>
   </main>
 </template>
