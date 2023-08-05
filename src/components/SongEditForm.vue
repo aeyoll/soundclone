@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { computed, PropType, ref } from 'vue';
+import {
+  computed, onMounted, PropType, ref,
+} from 'vue';
 
 import AppButton from '@/components/AppButton.vue';
 import AppSubtitle from '@/components/AppSubtitle.vue';
@@ -11,13 +13,13 @@ import type { SongSerializer } from '@/types/core';
 const store = useSoundcloneStore();
 const { playlist, newPlaylistName, createPlaylist } = usePlaylist();
 
-const newSongName = ref('');
-
 const playlists = computed(() => store.playlists);
 
 const props = defineProps({
   song: { type: Object as PropType<SongSerializer>, required: true },
 });
+
+const newSongName = ref('');
 
 const emit = defineEmits(['update:song']);
 
@@ -46,7 +48,15 @@ const updateSong = async () => {
   await store.updateSong(props.song?.id as number, payload);
 
   emit('update:song');
+
+  await store.getFeed();
 };
+
+onMounted(() => {
+  if (props.song?.name) {
+    newSongName.value = props.song?.name;
+  }
+});
 </script>
 
 <template>

@@ -13,7 +13,6 @@ import { formatHumanDate } from '@/utils';
 
 const store = useSoundcloneStore();
 
-const newSongName = ref('');
 const isOpen = ref(false);
 
 const props = defineProps({

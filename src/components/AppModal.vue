@@ -10,8 +10,6 @@
 </template>
 
 <script setup>
-import { defineProps } from 'vue';
-
 defineProps({
   isOpen: { type: Boolean, required: true, default: false },
 });
