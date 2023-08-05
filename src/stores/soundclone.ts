@@ -20,9 +20,11 @@ export const useSoundcloneStore = defineStore('soundclone', () => {
   const songs: Ref<SongSerializer[]> = ref([]);
   const currentIndex = ref(0);
 
+  const playlistsWithSongs = computed(() => playlists.value.filter((playlist) => playlist.songs && playlist.songs?.length > 0));
+
   // Computed
   const feed = computed(() => {
-    const merged = [...songs.value, ...playlists.value];
+    const merged = [...songs.value, ...playlistsWithSongs.value];
     // @ts-ignore
     return merged.sort((a, b) => new Date(b.created!) - new Date(a.created!));
   });
