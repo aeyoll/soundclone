@@ -9,7 +9,7 @@ defineEmits(['remove']);
 </script>
 
 <template>
-  <div class="flex items-center justify-between gap-2 p-2 text-sm border-b">
+  <div class="flex items-center justify-between gap-2 py-2 text-sm border-b">
     <div>
       {{ file.file.name }}
 
