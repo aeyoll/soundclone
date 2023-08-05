@@ -33,6 +33,7 @@ const emit = defineEmits([
 // Refs
 const waveform = ref<HTMLElement|null>(null);
 const hover = ref<HTMLElement|null>(null);
+const loading = ref(true);
 
 // Data
 const wavesurfer = ref<WaveSurfer>();
@@ -102,6 +103,7 @@ const createWavesurfer = () => {
 
   wavesurfer.value?.on('decode', (decodedDuration: number) => {
     duration.value = formatTime(decodedDuration);
+    loading.value = false;
   });
 
   wavesurfer.value?.on('timeupdate', (currentTime: number) => {
@@ -153,7 +155,8 @@ watch(() => store.currentIndex, (newIndex: number) => {
       <button type="button" v-if="!isPlaying" @click="play()" class="btn">Play</button>
     </div>
     <div class="w-full pr-2">
-      <div ref="waveform" class="waveform">
+      <div ref="waveform" class="waveform relative">
+        <div class="loading" v-if="loading">Loading...</div>
         <div class="time left-0">{{ time }}</div>
         <div class="time right-0">{{ duration }}</div>
         <div class="hover" ref="hover" />
@@ -173,6 +176,14 @@ watch(() => store.currentIndex, (newIndex: number) => {
 
   .btn {
     @apply aspect-square rounded-full bg-slate-700 hover:bg-slate-800 text-white p-2 h-16 w-16;
+  }
+
+  .loading {
+    @apply absolute;
+
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 
   .time {

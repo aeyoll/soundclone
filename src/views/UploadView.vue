@@ -116,7 +116,7 @@ onMounted(async () => {
 
     <FormInput v-model="newPlaylistName" label="New playlist" />
 
-    <div v-if="playlists.length">
+    <div v-if="playlists.length" class="text-slate-700">
       <p class="text-slate-500 my-2 text-sm">or</p>
       <p>Use an existing playlist</p>
       <div v-for="p in playlists" :key="p.id">
