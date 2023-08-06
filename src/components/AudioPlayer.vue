@@ -5,6 +5,7 @@ import {
 } from 'vue';
 import WaveSurfer from 'wavesurfer.js';
 
+import AppSpinner from '@/components/AppSpinner.vue';
 import { useSoundcloneStore } from '@/stores/soundclone';
 import type { PlaylistSerializer, SongSerializer, VersionSerializer } from '@/types/core';
 
@@ -156,7 +157,7 @@ watch(() => store.currentIndex, (newIndex: number) => {
     </div>
     <div class="w-full pr-2">
       <div ref="waveform" class="waveform relative">
-        <div class="loading" v-if="loading">Loading...</div>
+        <div class="loading" v-if="loading"><AppSpinner /></div>
         <div class="time left-0">{{ time }}</div>
         <div class="time right-0">{{ duration }}</div>
         <div class="hover" ref="hover" />
