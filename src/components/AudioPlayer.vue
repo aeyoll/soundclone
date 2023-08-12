@@ -91,7 +91,7 @@ const createWavesurfer = () => {
     progressColor: progressGradient,
     barWidth: 2,
     normalize: true,
-    url: props.song?.file as unknown as string,
+    url: props.song?.preview_file as unknown as string,
     peaks: props.song?.waveform?.data,
   });
 

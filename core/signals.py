@@ -1,7 +1,11 @@
 import json
+import os
 
+from django.core.files import File
+from django.core.files.temp import NamedTemporaryFile
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from pydub import AudioSegment
 
 from core.models import Song, Version
 from core.utils import run_command
@@ -48,11 +52,31 @@ def deinterleave(data, channel_count):
     return new_data
 
 
+def generate_mp3(instance: Version | Song):
+    """
+    Generate a mp3 from a file.
+
+    :param instance: either a version or a song
+    """
+    original_path = instance.file.path
+    preview_file_name = f'{os.path.basename(original_path)}.mp3'
+
+    audio = AudioSegment.from_file(original_path)
+
+    with NamedTemporaryFile() as f:
+        audio.export(f, format='mp3', bitrate='320k')
+        file = File(f)
+        instance.preview_file.save(preview_file_name, file, save=True)
+
+
 @receiver(post_save, sender=Version)
 @receiver(post_save, sender=Song)
 def generate_waveform(sender, instance, created, **kwargs):
+    if instance.file and not instance.preview_file:
+        generate_mp3(instance)
+
     if created:
-        command_to_run = f'/usr/local/bin/audiowaveform -i {instance.file.path} --pixels-per-second 5 --bits 8 --output-format=json -q'
+        command_to_run = f'/usr/local/bin/audiowaveform -i {instance.preview_file.path} --pixels-per-second 5 --bits 8 --output-format=json -q'
         output = run_command(command_to_run)
         instance.waveform = scale_json(output)
         instance.save()

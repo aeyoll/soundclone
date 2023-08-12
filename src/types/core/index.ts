@@ -28,6 +28,7 @@ export interface SongSerializer {
     */
     name: string;
     file: File;
+    preview_file?: File | null;
     slug?: string;
     waveform?: any | null;
     playlist?: number | string | null;
@@ -52,6 +53,7 @@ export interface VersionSerializer {
     */
     name: string;
     file: File;
+    preview_file?: File | null;
     slug?: string;
     song: number | string;
     waveform?: any | null;
