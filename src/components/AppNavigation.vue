@@ -9,6 +9,7 @@ import { RouterLink } from 'vue-router';
 
       <nav class="ml-auto">
         <ul class="flex space-x-8">
+          <li><RouterLink class="" to="/playlists">Playlists</RouterLink></li>
           <li><RouterLink class="" to="/upload">Upload</RouterLink></li>
           <li><RouterLink class="" to="/about">About</RouterLink></li>
         </ul>

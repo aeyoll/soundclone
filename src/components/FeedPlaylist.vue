@@ -3,6 +3,7 @@ import type { PropType } from 'vue';
 import { computed, ref } from 'vue';
 
 import AppButton from '@/components/AppButton.vue';
+import AppWarning from '@/components/AppWarning.vue';
 import AudioPlayer from '@/components/AudioPlayer.vue';
 import { useSoundcloneStore } from '@/stores/soundclone';
 import type { PlaylistSerializer } from '@/types/core';
@@ -57,7 +58,7 @@ const deletePlaylist = () => {
       @song-finished="goToNextSong()"
       class="mb-4" />
 
-    <div class="ml-20 border border-slate-200 rounded text-sm" v-if="playlist.songs">
+    <div class="ml-20 border border-slate-200 rounded text-sm" v-if="playlist.songs?.length > 0">
       <button
         class="p-2 w-full text-left flex justify-between items-center"
         :class="{ 'border-b': index !== playlist.songs?.length - 1, 'bg-slate-100': isPlaying && currentSongIndex === index }"
@@ -71,6 +72,9 @@ const deletePlaylist = () => {
         </span>
       </button>
     </div>
+    <AppWarning v-else>
+      No song in the playlist
+    </AppWarning>
 
     <div class="flex justify-end gap-2 mt-4" v-if="playlist.songs">
       <div v-if="playlist.songs.length > 1">
