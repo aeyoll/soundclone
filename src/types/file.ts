@@ -10,7 +10,7 @@ export function removeExtension(filename: string): string {
 }
 
 export function removePrefix(fileName: string): string {
-  return fileName.replace(/^\s*\d+\s*-\s*/, '');
+  return fileName.replace(/^\s*\d+\s*-?\s*/, '');
 }
 
 export function toCapitalCase(inputString: string): string {
