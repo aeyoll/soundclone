@@ -1,14 +1,28 @@
 import json
 import os
+from os.path import splitext
 
+import magic
 from django.core.files import File
 from django.core.files.temp import NamedTemporaryFile
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 from pydub import AudioSegment
 
 from core.models import Song, Version
 from core.utils import run_command
+
+# Map mime types to extensions
+mime_extension_map = {
+    'audio/mpeg': 'mp3',
+    'audio/wav': 'wav',
+    'audio/midi': 'mid',
+    'audio/ogg': 'ogg',
+    'audio/x-ms-wma': 'wma',
+    'audio/x-flac': 'flac',
+    'audio/aac': 'aac',
+    'audio/x-aiff': 'aif',
+}
 
 
 def scale_json(file_content):
@@ -67,6 +81,33 @@ def generate_mp3(instance: Version | Song):
         audio.export(f, format='mp3', bitrate='320k')
         file = File(f)
         instance.preview_file.save(preview_file_name, file, save=True)
+
+
+@receiver(pre_save, sender=Version)
+@receiver(pre_save, sender=Song)
+def add_missing_extension(sender, instance, **kwargs):
+    if not instance.file:
+        return
+
+    # Get the mimetype using python-magic
+    mime = magic.Magic(mime=True)
+    mime_type = mime.from_buffer(instance.file.read())
+
+    # Extract extension from mimetype or default to 'txt'
+    extension = mime_extension_map.get(mime_type, 'txt')
+
+    # Move the file pointer back to the start of the file
+    instance.file.seek(0)
+
+    # Get the original file name without extension
+    filename, _ = splitext(instance.file.name)
+
+    # Create a new file name with the determined extension if needed
+    if not filename.endswith(f'.{extension}'):
+        new_filename = f'{filename}.{extension}'
+
+        # Set the new file name
+        instance.file.name = new_filename
 
 
 @receiver(post_save, sender=Version)
